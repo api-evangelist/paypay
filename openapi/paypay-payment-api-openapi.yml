@@ -1,0 +1,2222 @@
+openapi: 3.0.0
+info:
+  x-logo:
+    url: https://image.paypay.ne.jp/page/common/images/img_logo.png
+    altText: PayPay Open Payment Api
+  contact:
+    name: API Support
+  version: '1.1'
+  title: Dynamic QR Payment API
+  description: "# Introduction\n\nPayPay Open Payment API (OPA) is designed to be used by our payment partners to make payment-related operations in different scenarios, so as to deliver the best payment experience to end users. After being onboarded as a PayPay OPA client, depending on the contract, you will have the capability on one or more of the below:\n  - Collect payment by directly debiting from PayPay user’s wallet\n  - Create Dynamic QR Code and collect payments via PayPay's App\n  - Use pre-authorization and capture payment flow to facilitate your purchase procedure\n  - Easy web application integration with PayPay cashier page to collect payment\n  - Build your own checkout experience with rich APIs provided by PayPay\n\nThis document will be focusing on APIs that support the second solution for Dynamic QR Code Payment.\n# Connection Information\n- This system uses custom SSL/TLS certificates on Amazon CloudFront for HTTPS communication. For certificate specifications and root CA information, please check: https://www.amazontrust.com/repository/\n- Additionally, the CloudFront distribution used by this system utilizes Server Name Indication (SNI) for HTTPS connections. Clients connecting to this system must support the TLS SNI extension. Please note that some legacy browsers or clients that do not support SNI will not be able to connect.\n- For details on SNI and its operation in CloudFront, please refer to the AWS documentation: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-https-dedicated-ip-or-sni.html\n- SSL/TLS Versions As a security measure, this system requires the use of TLS 1.2. Connections via TLS 1.0 or TLS 1.1 are not supported.\n\n# Dynamic QR Code Flow\nIn this flow we empower merchants to create a QR Code which can be displayed to the user. The user can then scan the QR Code using PayPay App to process the payment. The merchant can query the status of the payment as well as be notified of the payment to process the order. Details of the flow are shown in the <a href=\"./files/Dynamic QR Code Integration.pdf\" target=\"_blank\">slides here</a>. The polling interval should be about 2 to 3 seconds.<BR>\n<img src=\"./imgs/dynamicqrcode-sequence.png\">\n\n# Onboard merchant\n\nTo start utilizing our Open Payment API platform, at first the business needs to be onboarded as a PayPay merchant.\nThis process usually consists of information collection, manual verification, contract confirmation and credentials issuance.\n\nAfter becoming a merchant on PayPay, the following items would be setup for the client:\n\n  - api key and secret\n  - webhook endpoints\n  - client IP whitelist\n  - merchant identifier (merchant_id) (for agent client)\n\nThis setup can be managed using our merchant panel/ getting in touch with the sales representative.<BR><BR>\nAccess from users to the PayPay app and PayPay web screen from outside Japan is restricted. Please contact us for details.\n"
+servers:
+- description: Production server
+  url: //apigw.paypay.ne.jp
+- description: Staging server
+  url: //apigw.stg.paypay.ne.jp
+- description: Sandbox server
+  url: //apigw.sandbox.paypay.ne.jp
+- description: Production server (deprecated)
+  url: //api.paypay.ne.jp
+- description: Staging server (deprecated)
+  url: //stg-api.paypay.ne.jp
+- description: Sandbox server (deprecated)
+  url: //stg-api.sandbox.paypay.ne.jp
+tags:
+- name: Payment
+  x-displayName: Payment
+  description: Everything involved in the payment life cycle
+paths:
+  /v2/codes:
+    post:
+      tags:
+      - Payment
+      summary: Create a QRCode
+      description: 'Create a dynamic QR Code to receive payments.The expiration date of the created QRcode is set to "expiryDate". <br>
+
+        Please manage merchantPaymentId to make it unique on merchant side.
+
+
+        **Timeout: 30s**
+
+        '
+      operationId: createQRCode
+      requestBody:
+        $ref: '#/components/requestBodies/CreateQRCode'
+      responses:
+        '201':
+          $ref: '#/components/responses/QRCodeDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v2/codes/{codeId}:
+    delete:
+      tags:
+      - Payment
+      summary: Delete a Code
+      x-description-en: 'Delete a created dynamic QR Code.
+
+
+        **Timeout: 15s**
+
+        '
+      x-description-jp: '作成したQRコードを削除します。
+
+
+        **Timeout: 15s**
+
+        '
+      operationId: deleteQRCode
+      parameters:
+      - name: codeId
+        in: path
+        required: true
+        x-description-en: 'The ID of the Code
+
+          '
+        x-description-jp: 'コードID
+
+          '
+        schema:
+          type: string
+        description: 'The ID of the Code
+
+          '
+      responses:
+        '200':
+          $ref: '#/components/responses/QRCodeDeleteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: 'Delete a created dynamic QR Code.
+
+
+        **Timeout: 15s**
+
+        '
+  /v2/codes/payments/{merchantPaymentId}:
+    get:
+      tags:
+      - Payment
+      summary: Get payment details
+      x-description-en: 'Get payment details.
+
+
+        **Timeout: 15s**
+
+        '
+      x-description-jp: '決済の詳細を取得します。
+
+
+        **Timeout: 15s**
+
+        '
+      operationId: getCodePaymentDetails
+      parameters:
+      - name: merchantPaymentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/MerchantPaymentIdSimple'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCodesPaymentDetailsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: 'Get payment details.
+
+
+        **Timeout: 15s**
+
+        '
+  /v2/payments/{merchantPaymentId}:
+    x-override-visible-methods: {}
+    delete:
+      tags:
+      - Payment
+      summary: Cancel a payment
+      x-description-en: 'This API is used when, while creating a payment, the client cannot determine the status of
+
+        the payment. For example, the client receives a timeout or the response does not indicate the exact payment status.
+
+
+        If the request is accepted, PayPay will guarantee the money eventually goes back to
+
+        user''s account. Please note this is an <b>asynchronous API</b> and hence there can be a lag in processing the cancellation.
+
+
+        </br><b style="color:red">Note:</b>
+
+        You can utilize the Cancel API within the specified timeframe. <br>
+
+        By default, the window is opened until 00:14:59 AM on the following day after the transaction took place. <br>
+
+        Once this window is closed, kindly use the refund API to initiate refund. <br>
+
+
+        For orderType REMITTANCE, the window is opened until 25 minutes after PayPay accepted the transaction.<br>
+
+        You''re not able to initiate refund request for REMITTANCE.
+
+
+        When you use PreAuth, you can cancel the payment only when the status is <code>AUTHORIZED</code>.<br>
+
+        Once the payment status becomes <code>COMPLETED</code> or the payment is expired and the status is <code>EXPIRED</code>, you cannot cancel the payment.<br>
+
+
+        When a timeout error happens, we recommend to keep calling until it succeeds with an adequate interval, or till the specified window above comes to an end.
+
+
+        **Timeout: 15s**
+
+        '
+      x-description-jp: 'このAPIは、支払いのリクエスト中にクライアントが支払いのステータスを判断できない場合に使用します。
+
+        例えば、タイムアウトの状態になった場合や、レスポンスに支払いステータスが含まれていない場合などです。
+
+
+        このAPIを呼び出すことで、支払金額がユーザーのアカウントに戻ることを保証します。
+
+
+        </br><b style="color:red">Note:</b>
+
+        キャンセルはデフォルトで決済が発生した翌日の00:14:59 AMまで使用することができます。</br>
+
+        翌日の00:15 AM以降の払い戻しはRefund a payment（返金）を使用してください。</br>
+
+
+        orderTypeがREMITTANCEの場合はPayPayがリクエストを受け付けてから25分以内にキャンセルを行うことができます。<br>
+
+        またorderTypeがREMITTANCEの場合はRefund a payment（返金）はご利用いただけません。
+
+
+        出荷売上の場合は、ステータスが<code>AUTHORIZED</code>の場合に使用可能です。</br>
+
+        支払いが完了してステータスが<code>COMPLETED</code>になるか、期限を過ぎて<code>EXPIRED</code>になると、使用できません。<br>
+
+
+        タイムアウトエラーが発生した場合は、適切な間隔をあけて成功するまでリトライすることを推奨します。
+
+
+        **Timeout: 15s**
+
+        '
+      operationId: cancelPayment
+      parameters:
+      - in: path
+        name: merchantPaymentId
+        required: true
+        schema:
+          $ref: '#/components/schemas/MerchantPaymentIdSimple'
+      responses:
+        '202':
+          $ref: '#/components/responses/Accepted'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: 'This API is used when, while creating a payment, the client cannot determine the status of
+
+        the payment. For example, the client receives a timeout or the response does not indicate the exact payment status.
+
+
+        If the request is accepted, PayPay will guarantee the money eventually goes back to
+
+        user''s account. Please note this is an <b>asynchronous API</b> and hence there can be a lag in processing the cancellation.
+
+
+        </br><b style="color:red">Note:</b>
+
+        You can utilize the Cancel API within the specified timeframe. <br>
+
+        By default, the window is opened until 00:14:59 AM on the following day after the transaction took place. <br>
+
+        Once this window is closed, kindly use the refund API to initiate refund. <br>
+
+
+        For orderType REMITTANCE, the window is opened until 25 minutes after PayPay accepted the transaction.<br>
+
+        You''re not able to initiate refund request for REMITTANCE.
+
+
+        When you use PreAuth, you can cancel the payment only when the status is <code>AUTHORIZED</code>.<br>
+
+        Once the payment status becomes <code>COMPLETED</code> or the payment is expired and the status is <code>EXPIRED</code>, you cannot cancel the payment.<br>
+
+
+        When a timeout error happens, we recommend to keep calling until it succeeds with an adequate interval, or till the specified window above comes to an end.
+
+
+        **Timeout: 15s**
+
+        '
+  /v2/payments/reauthorize:
+    post:
+      tags:
+      - Payment
+      summary: Update a payment authorization
+      x-description-en: "This API is used to change the blocked amount of money during authorization with the same payment method.  \n\nDuring this API call, a new AUTHORIZED event webhook will be triggered, and the state of the transaction will remain as AUTHORIZED.\n\nIf lower amount of reauthorization is initiated, this API will return 200 for successful call and the process will be completed.\n<img src=\"./imgs/diagram-flow-day1-reauthorize.png\">\n\nIf higher amount of reauthorization is initiated, this API will return 201 code for successful call to ask for user's confirmation.\n<img src=\"./imgs/diagram-flow-day2-reauthorize.png\">\n\nIn the reconciliation file, it is expected to have multiple records of AUTHORIZED transactions with the same order ID. The overview of how the reconciliation file will be is shown below:\n| orderId      | merchantId  | brandName    | storeId     | terminalId | transactionStatus | acceptedAt                    | amount    | orderReceiptNumber | methodOfPayment | merchantPaymentId | paymentDetails |\n|--------------|-------------|--------------|-------------|------------|-------------------|-------------------------------|-----------|--------------------|-----------------|-----------------|-----------------|\n| xx123456     | yy08181     | 〇〇加盟店     | 1234567     | 0          | COMPLETED         | 2020-01-30T10:53:25+09:00     |  480      | 000-0001           | wallet, point   | 000-0001        | [{\"paymentMethod\":\"POINT\", \"amount\":80}, {\"paymentMethod\":\"wallet\", \"amount\":400}] |\n| xx123456     | yy08181     | 〇〇加盟店     | 1234567     | 0          | REFUNDED          | 2020-01-30T16:53:25+09:00     |  -480     | 000-0001           | wallet          | refund_000-0001 | [{\"paymentMethod\":\"wallet\", \"amount\":-480}] |\n| xx567890     | yy08181     | 〇〇加盟店     | 1234567     | 0          | AUTHORIZED        | 2020-01-30T13:31:43+09:00     |  2924     | 000-0005           | wallet          | 000-0005        | [{\"paymentMethod\":\"wallet\", \"amount\":2924}] |\n| **xx567890** | **yy08181** | **〇〇加盟店** | **1234567** | **0**      | **AUTHORIZED**    | **2020-01-31T13:50:43+09:00** | **1000**  | **000-0005**       | **wallet**      | **000-0005**    | [{\"paymentMethod\":\"wallet\", \"amount\":1000}] |\n\n**Timeout: 30 s**\n"
+      x-description-jp: 'このAPIは事前にユーザーの残高からブロックしていた決済金額を同じ決済手段で変更するために使用されます。
+
+
+        APIのコール中に、新しい AUTHORIZED イベントWebHookが発動し、トランザクションのステータスは AUTHORIZED のまま保持されます。
+
+
+        減額Reauthorize処理がコールされた場合、正常処理の場合に200を返し処理は完了します。
+
+        <img src="./imgs/diagram-flow-day1-reauthorize.png">
+
+
+        増額ReAuthorize処理が開始されると、このAPIは201: ユーザーへの再認証要求完了を返します。
+
+        <img src="./imgs/diagram-flow-day2-reauthorize.png">
+
+
+        突合ファイルの中では、同じオーダーIDのAUTHORIZEDトランザクションが複数存在します。突合ファイルの概要は下記です。
+
+
+        | orderId      | merchantId  | brandName    | storeId     | terminalId | transactionStatus | acceptedAt                    | amount    | orderReceiptNumber | methodOfPayment | merchantPaymentId | paymentDetails |
+
+        |--------------|-------------|--------------|-------------|------------|-------------------|-------------------------------|-----------|--------------------|-----------------|-----------------|-----------------|
+
+        | xx123456     | yy08181     | 〇〇加盟店     | 1234567     | 0          | COMPLETED         | 2020-01-30T10:53:25+09:00     |  480      | 000-0001           | wallet, point          | 000-0001        | [{"paymentMethod":"POINT", "amount":80}, {"paymentMethod":"wallet", "amount":400}] |
+
+        | xx123456     | yy08181     | 〇〇加盟店     | 1234567     | 0          | REFUNDED          | 2020-01-30T16:53:25+09:00     |  -480     | 000-0001           | wallet          | refund_000-0001 | [{"paymentMethod":"wallet", "amount":-480}] |
+
+        | xx567890     | yy08181     | 〇〇加盟店     | 1234567     | 0          | AUTHORIZED        | 2020-01-30T13:31:43+09:00     |  2924     | 000-0005           | wallet          | 000-0005        | [{"paymentMethod":"wallet", "amount":2924}] |
+
+        | **xx567890** | **yy08181** | **〇〇加盟店** | **1234567** | **0**      | **AUTHORIZED**    | **2020-01-31T13:50:43+09:00** | **1000**  | **000-0005**       | **wallet**      | **000-0005**    | [{"paymentMethod":"wallet", "amount":1000}] |
+
+
+        **タイムアウト: 30秒**
+
+        '
+      operationId: reauthorizePayment
+      requestBody:
+        $ref: '#/components/requestBodies/ReauthorizeRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ReauthorizeResponse'
+        '201':
+          $ref: '#/components/responses/ReauthorizeWithUserConfirmationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerErrorResponse'
+      description: "This API is used to change the blocked amount of money during authorization with the same payment method.  \n\nDuring this API call, a new AUTHORIZED event webhook will be triggered, and the state of the transaction will remain as AUTHORIZED.\n\nIf lower amount of reauthorization is initiated, this API will return 200 for successful call and the process will be completed.\n<img src=\"./imgs/diagram-flow-day1-reauthorize.png\">\n\nIf higher amount of reauthorization is initiated, this API will return 201 code for successful call to ask for user's confirmation.\n<img src=\"./imgs/diagram-flow-day2-reauthorize.png\">\n\nIn the reconciliation file, it is expected to have multiple records of AUTHORIZED transactions with the same order ID. The overview of how the reconciliation file will be is shown below:\n| orderId      | merchantId  | brandName    | storeId     | terminalId | transactionStatus | acceptedAt                    | amount    | orderReceiptNumber | methodOfPayment | merchantPaymentId | paymentDetails |\n|--------------|-------------|--------------|-------------|------------|-------------------|-------------------------------|-----------|--------------------|-----------------|-----------------|-----------------|\n| xx123456     | yy08181     | 〇〇加盟店     | 1234567     | 0          | COMPLETED         | 2020-01-30T10:53:25+09:00     |  480      | 000-0001           | wallet, point   | 000-0001        | [{\"paymentMethod\":\"POINT\", \"amount\":80}, {\"paymentMethod\":\"wallet\", \"amount\":400}] |\n| xx123456     | yy08181     | 〇〇加盟店     | 1234567     | 0          | REFUNDED          | 2020-01-30T16:53:25+09:00     |  -480     | 000-0001           | wallet          | refund_000-0001 | [{\"paymentMethod\":\"wallet\", \"amount\":-480}] |\n| xx567890     | yy08181     | 〇〇加盟店     | 1234567     | 0          | AUTHORIZED        | 2020-01-30T13:31:43+09:00     |  2924     | 000-0005           | wallet          | 000-0005        | [{\"paymentMethod\":\"wallet\", \"amount\":2924}] |\n| **xx567890** | **yy08181** | **〇〇加盟店** | **1234567** | **0**      | **AUTHORIZED**    | **2020-01-31T13:50:43+09:00** | **1000**  | **000-0005**       | **wallet**      | **000-0005**    | [{\"paymentMethod\":\"wallet\", \"amount\":1000}] |\n\n**Timeout: 30 s**\n"
+  /v2/payments/capture:
+    post:
+      tags:
+      - Payment
+      summary: Capture a payment authorization
+      x-description-en: 'This api is used to capture the payment authorization for a payment.</br>
+
+        If you want to increase the amount, we will send a notification to the user asking for consent.
+
+
+        Even when a timeout error happens, we recommend to keep calling until it succeeds with an adequate interval, with different `merchantCaptureId`.
+
+
+        **Timeout: 30s**
+
+        '
+      x-description-jp: '事前にユーザーの残高からブロックしていた決済金額をキャプチャ(決済)します。</br>
+
+        増額キャプチャの場合、ユーザーに承諾を求める通知を送信します。
+
+
+        タイムアウトエラーが発生した場合は、リクエスト毎に`merchantCaptureId`を変え、適切な間隔をあけて成功するまでリトライすることを推奨します。
+
+
+        **Timeout: 30s**
+
+        '
+      operationId: capturePaymentAuth
+      requestBody:
+        $ref: '#/components/requestBodies/CaptureRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CaptureDetailsResponse'
+        '202':
+          $ref: '#/components/responses/CaptureDetailsConfirmationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: 'This api is used to capture the payment authorization for a payment.</br>
+
+        If you want to increase the amount, we will send a notification to the user asking for consent.
+
+
+        Even when a timeout error happens, we recommend to keep calling until it succeeds with an adequate interval, with different `merchantCaptureId`.
+
+
+        **Timeout: 30s**
+
+        '
+  /v2/payments/preauthorize/revert:
+    post:
+      tags:
+      - Payment
+      summary: Revert a payment authorization
+      x-description-en: 'This API is used when the merchant wants to cancel the payment authorization because of the user has cancelled the order.
+
+
+        **Timeout: 30s**
+
+        '
+      x-description-jp: 'このAPIは、ユーザーの残高から決済金額をブロックしている状態をキャンセルする場合に使用します。
+
+        </br>例えば、注文のキャンセルが発生した場合等。
+
+
+        **Timeout: 30s**
+
+        '
+      operationId: revertAuth
+      requestBody:
+        $ref: '#/components/requestBodies/RevertAuthRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/RevertAuthResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: 'This API is used when the merchant wants to cancel the payment authorization because of the user has cancelled the order.
+
+
+        **Timeout: 30s**
+
+        '
+  /v2/refunds:
+    post:
+      tags:
+      - Payment
+      summary: Refund a payment
+      description: 'Refund the payment to the user.<br>
+
+        This API only accepts payment refunds, and refunds are performed asynchronously on the PayPay side.<br>
+
+        Please see Get refund details for the results of your refund.
+
+
+        **Timeout: 30s**
+
+        '
+      operationId: refundPayment
+      requestBody:
+        $ref: '#/components/requestBodies/CreateRefundRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetRefundDetailsWithAssumeMerchantResponse'
+        4XX:
+          $ref: '#/components/responses/ClientErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ServerErrorResponse'
+  /v2/refunds/{merchantRefundId}?paymentId={paymentId}:
+    get:
+      tags:
+      - Payment
+      summary: Get refund details
+      x-description-en: 'Get refund details. <br/><br/>
+
+        In case you use same `merchantRefundId` for the different `paymentId`s (different payment transaction IDs) in the POST Refund API. PayPay has multiple refund data for the same `merchantRefundId` in the system.
+
+        PayPay maintains the merchantId, merchantRefundId, paymentId as idem key to identify the unique refund transaction details.
+
+
+        **Timeout: 15s**
+
+        '
+      x-description-jp: '返金の詳細を取得します。<br/>
+
+
+        複数の異なる `paymentId` (異なる決済トランザクションのID）に同じ `merchantRefundId` を使う場合、PayPayでは1つの `merchantRefundId` に対して複数の返金データが紐付けられます。<br/>
+
+        PayPayは `merchantId` と `merchantRefundId` と `paymentId` を返金トランザクションの詳細を特定するための固有なキー（idempotency-key）であるものとしています。<br/>
+
+
+        **Timeout: 15s**
+
+        '
+      operationId: getRefundDetails
+      parameters:
+      - name: merchantRefundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/MerchantRefundIdSimple'
+      - name: paymentId
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/PaymentId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetRefundDetailsWithFailedResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerErrorResponse'
+      description: 'Get refund details. <br/><br/>
+
+        In case you use same `merchantRefundId` for the different `paymentId`s (different payment transaction IDs) in the POST Refund API. PayPay has multiple refund data for the same `merchantRefundId` in the system.
+
+        PayPay maintains the merchantId, merchantRefundId, paymentId as idem key to identify the unique refund transaction details.
+
+
+        **Timeout: 15s**
+
+        '
+components:
+  responses:
+    ReauthorizeResponse:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - requestId
+            - paymentId
+            - updatedAmount
+            - requestedAt
+            - acceptedAt
+            - expiresAt
+            - paymentMethods
+            properties:
+              resultInfo:
+                $ref: '#/components/schemas/ResultInfo'
+              data:
+                type: object
+                properties:
+                  requestId:
+                    $ref: '#/components/schemas/ReauthRequestId'
+                  paymentId:
+                    $ref: '#/components/schemas/PaymentId'
+                  updatedAmount:
+                    $ref: '#/components/schemas/MoneyAmount'
+                  requestedAt:
+                    $ref: '#/components/schemas/EpochTime'
+                  acceptedAt:
+                    type: integer
+                    x-description-en: 'Epoch timestamp in seconds. Timestamp when the reauthorization is accepted and processed at PayPay
+
+                      '
+                    x-description-jp: 'エポックタイムスタンプ(秒単位)。PayPayでReAuthを受理し処理した時刻
+
+                      '
+                    description: 'Epoch timestamp in seconds. Timestamp when the reauthorization is accepted and processed at PayPay
+
+                      '
+                  expiresAt:
+                    $ref: '#/components/schemas/ReauthExpiresAt'
+                  paymentMethods:
+                    type: array
+                    x-description-en: 'Payment methods
+
+                      '
+                    x-description-jp: '支払い方法のリスト
+
+                      '
+                    items:
+                      type: object
+                      required:
+                      - amount
+                      - type
+                      properties:
+                        amount:
+                          $ref: '#/components/schemas/MoneyAmount'
+                        type:
+                          type: string
+                          enum:
+                          - WALLET
+                          - PAY_LATER_CC
+                          - CREDIT_CARD
+                          - GIFT_VOUCHER
+                          x-description-en: 'GIFT_VOUCHER will be applicable to merchants who are onboarded to support the Gift Voucher.
+
+                            '
+                          x-description-jp: 'GIFT_VOUCHER は商品券を受け付けている加盟店のみに適用されます。
+
+                            '
+                          description: 'GIFT_VOUCHER will be applicable to merchants who are onboarded to support the Gift Voucher.
+
+                            '
+                    description: 'Payment methods
+
+                      '
+      x-description-en: 'Success
+
+        '
+      x-description-jp: 'Success
+
+        '
+      description: 'Success
+
+        '
+    RevertAuthResponse:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - status
+            - acceptedAt
+            - paymentId
+            - requestedAt
+            properties:
+              resultInfo:
+                $ref: '#/components/schemas/ResultInfo'
+              data:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - CANCELED
+                    x-description-en: null
+                    x-description-jp: 'CANCELED：残高ブロック中止
+
+                      '
+                  acceptedAt:
+                    $ref: '#/components/schemas/EpochTime'
+                  paymentId:
+                    $ref: '#/components/schemas/PaymentId'
+                  requestedAt:
+                    $ref: '#/components/schemas/EpochTime'
+                  reason:
+                    nullable: true
+                    $ref: '#/components/schemas/Reason'
+      x-description-en: 'Success
+
+        '
+      x-description-jp: 'Success
+
+        '
+      description: 'Success
+
+        '
+    GetCodesPaymentDetailsResponse:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resultInfo:
+                $ref: '#/components/schemas/ResultInfo'
+              data:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/PaymentState'
+                - $ref: '#/components/schemas/PaymentOrderWithoutUserAuthorizationId'
+                - $ref: '#/components/schemas/PaymentMethodsForPayment'
+      x-description-en: 'Success
+
+        '
+      x-description-jp: 'Success
+
+        '
+      description: 'Success
+
+        '
+    GetRefundDetailsWithAssumeMerchantResponse:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resultInfo:
+                $ref: '#/components/schemas/ResultInfo'
+              data:
+                $ref: '#/components/schemas/RefundWithAssumeMerchant'
+      x-description-en: 'Success
+
+        '
+      x-description-jp: '成功
+
+        '
+      description: 'Success
+
+        '
+    NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotDataResponse'
+      x-description-en: 'The requested resource doesn''t exist.
+
+        '
+      x-description-jp: '要求されたリソースは存在しません。
+
+        '
+      description: 'The requested resource doesn''t exist.
+
+        '
+    ServerErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotDataResponse'
+      x-description-en: 'Server Error
+
+        '
+      x-description-jp: 'サーバーエラー
+
+        '
+      description: 'Server Error
+
+        '
+    ClientErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotDataResponse'
+      x-description-en: 'Client Error
+
+        '
+      x-description-jp: 'クライアントエラー
+
+        '
+      description: 'Client Error
+
+        '
+    QRCodeDeleteResponse:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resultInfo:
+                $ref: '#/components/schemas/ResultInfo'
+              data:
+                type: object
+                properties:
+                  qrStatus:
+                    type: string
+                    enum:
+                    - DELETED
+                    x-description-en: 'Requested code is deleted
+
+                      '
+                    x-description-jp: 'リクエストされたコードは削除されました
+
+                      '
+                    description: 'Requested code is deleted
+
+                      '
+      x-description-en: 'The requested succeeded
+
+        '
+      x-description-jp: 'リクエスト成功
+
+        '
+      description: 'The requested succeeded
+
+        '
+    ReauthorizeWithUserConfirmationResponse:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resultInfo:
+                type: object
+                properties:
+                  code:
+                    maxLength: 255
+                    type: string
+                    default: USER_CONFIRMATION_REQUIRED
+                  message:
+                    maxLength: 255
+                    type: string
+                    default: User confirmation required as requested amount is above the original authorized amount
+                  codeId:
+                    maxLength: 255
+                    type: string
+                    x-description-en: 'The code for more specific error inspection
+
+                      '
+                    x-description-jp: 'より具体的なエラー検査のためのコード
+
+                      '
+                    default: 08300104
+                    description: 'The code for more specific error inspection
+
+                      '
+              data:
+                type: object
+                properties:
+                  expiresAt:
+                    $ref: '#/components/schemas/ReauthExpiresAt'
+                  url:
+                    type: string
+                    x-description-en: 'Generated url path when merchant wants to redirect to either Paypay App or Paypay Web
+
+                      '
+                    x-description-jp: 'PayPayアプリまたはPayPay WebにリダイレクトするURL
+
+                      '
+                    description: 'Generated url path when merchant wants to redirect to either Paypay App or Paypay Web
+
+                      '
+      x-description-en: 'Success with Action Pending
+
+        '
+      x-description-jp: '承認依頼に成功
+
+        '
+      description: 'Success with Action Pending
+
+        '
+    GetRefundDetailsWithFailedResponse:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resultInfo:
+                $ref: '#/components/schemas/ResultInfo'
+              data:
+                $ref: '#/components/schemas/Refund'
+      x-description-en: 'Success
+
+        '
+      x-description-jp: '成功
+
+        '
+      description: 'Success
+
+        '
+    InternalServerError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotDataResponse'
+      x-description-en: 'Something went wrong on PayPay service side.
+
+        '
+      x-description-jp: 'PayPay側で何らかの問題が発生しました。
+
+        '
+      description: 'Something went wrong on PayPay service side.
+
+        '
+    Accepted:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotDataResponse'
+      x-description-en: 'The request is accepted.
+
+        '
+      x-description-jp: 'リクエストを受け付けました。
+
+        '
+      description: 'The request is accepted.
+
+        '
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotDataResponse'
+      x-description-en: 'Unauthorized
+
+        '
+      x-description-jp: '認証エラー
+
+        '
+      description: 'Unauthorized
+
+        '
+    CaptureDetailsConfirmationResponse:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resultInfo:
+                type: object
+                properties:
+                  code:
+                    maxLength: 255
+                    type: string
+                    example: '''USER_CONFIRMATION_REQUIRED''
+
+                      '
+                  message:
+                    maxLength: 255
+                    type: string
+                    x-example-en: '''User confirmation required as requested amount is above allowed limit. | [OPA12345678901234567890123456789012]''
+
+                      '
+                    x-example-jp: '''リクエストされた金額が上限を超えているため、ユーザーの確認が必要です。 | [OPA12345678901234567890123456789012]''
+
+                      '
+                    example: '''User confirmation required as requested amount is above allowed limit. | [OPA12345678901234567890123456789012]''
+
+                      '
+                  codeId:
+                    maxLength: 255
+                    type: string
+                    example: 08300103
+              data:
+                $ref: '#/components/schemas/EmptyData'
+      x-description-en: 'Confirmation request is sent to user.
+
+        '
+      x-description-jp: '確認リクエストがユーザーに送信されます。
+
+        '
+      description: 'Confirmation request is sent to user.
+
+        '
+    QRCodeDetails:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resultInfo:
+                $ref: '#/components/schemas/ResultInfo'
+              data:
+                $ref: '#/components/schemas/QRCodeResponse'
+    CaptureDetailsResponse:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resultInfo:
+                $ref: '#/components/schemas/ResultInfo'
+              data:
+                $ref: '#/components/schemas/CapturePayment'
+      x-description-en: 'Success
+
+        '
+      x-description-jp: '成功
+
+        '
+      description: 'Success
+
+        '
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotDataResponse'
+      x-description-en: 'The request has invalid parameters or missing required parameters.
+
+        '
+      x-description-jp: 'リクエストに無効なパラメータがあるか、必須パラメータがありません。
+
+        '
+      description: 'The request has invalid parameters or missing required parameters.
+
+        '
+  requestBodies:
+    ReauthorizeRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - requestId
+            - paymentId
+            - updatedAmount
+            properties:
+              requestId:
+                $ref: '#/components/schemas/ReauthRequestId'
+              paymentId:
+                $ref: '#/components/schemas/PaymentId'
+              updatedAmount:
+                $ref: '#/components/schemas/MoneyAmount'
+              requestedAt:
+                $ref: '#/components/schemas/EpochTime'
+              merchantComment:
+                maxLength: 255
+                type: string
+                x-description-en: 'The reason why a reauth is required. Will be shown in post transaction screen timeline if passed
+
+                  '
+                x-description-jp: 'ReAuthが必要とされる理由。渡されるとPost Transaction画面に表示される
+
+                  '
+                description: 'The reason why a reauth is required. Will be shown in post transaction screen timeline if passed
+
+                  '
+              redirectUrl:
+                type: string
+                x-description-en: 'Url that Paypay can redirect to after reauthorize is successfully executed. Required for higher amount reauthorization
+
+                  '
+                x-description-jp: '再認証成功後にPayPayがリダイレクトするUrl。増額ReAuthorizeのリクエストでは必須です。
+
+                  '
+                description: 'Url that Paypay can redirect to after reauthorize is successfully executed. Required for higher amount reauthorization
+
+                  '
+              redirectType:
+                type: string
+                enum:
+                - APP_DEEP_LINK
+                - WEB_LINK
+                x-description-en: 'Type of redirection after reauthorize is successfully executed. Required for higher amount reauthorization
+
+                  '
+                x-description-jp: '再認証成功後のリダイレクトタイプ。増額ReAuthorizeのリクエストでは必須です。
+
+                  '
+                description: 'Type of redirection after reauthorize is successfully executed. Required for higher amount reauthorization
+
+                  '
+              userAgent:
+                type: string
+                x-description-en: 'Full string of browser user agent. Required for higher amount reauthorization
+
+                  '
+                x-description-jp: 'ブラウザのユーザーエージェント文字列。増額ReAuthorizeのリクエストでは必須です。
+
+                  '
+                description: 'Full string of browser user agent. Required for higher amount reauthorization
+
+                  '
+      x-description-en: 'Reauthorize
+
+        '
+      x-description-jp: 'Reauthorize
+
+        '
+      description: 'Reauthorize
+
+        '
+    CreateQRCode:
+      description: QRCode
+      content:
+        application/json:
+          schema:
+            required:
+            - merchantPaymentId
+            - amount
+            - codeType
+            allOf:
+            - $ref: '#/components/schemas/QRCode'
+    CaptureRequest:
+      content:
+        application/json:
+          schema:
+            required:
+            - merchantPaymentId
+            allOf:
+            - type: object
+              required:
+              - MerchantPaymentId
+              - amount
+              - merchantCaptureId
+              - requestedAt
+              - orderDescription
+              properties:
+                merchantPaymentId:
+                  $ref: '#/components/schemas/MerchantPaymentIdSimple'
+                amount:
+                  $ref: '#/components/schemas/MoneyAmount'
+                merchantCaptureId:
+                  $ref: '#/components/schemas/MerchantCaptureId'
+                requestedAt:
+                  $ref: '#/components/schemas/EpochTime'
+                orderDescription:
+                  maxLength: 255
+                  type: string
+                  x-description-en: 'Description for Capture
+
+                    '
+                  x-description-jp: 'キャプチャの説明
+
+                    '
+                  description: 'Description for Capture
+
+                    '
+    RevertAuthRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - merchantRevertId
+            - paymentId
+            - requestedAt
+            properties:
+              merchantRevertId:
+                $ref: '#/components/schemas/MerchantRevertId'
+              paymentId:
+                $ref: '#/components/schemas/PaymentId'
+              requestedAt:
+                $ref: '#/components/schemas/EpochTime'
+              reason:
+                $ref: '#/components/schemas/Reason'
+      x-description-en: 'Revert Authorized Order Request
+
+        '
+      x-description-jp: 'Revert Authorized Order Request
+
+        '
+      description: 'Revert Authorized Order Request
+
+        '
+    CreateRefundRequest:
+      content:
+        application/json:
+          schema:
+            required:
+            - merchantRefundId
+            - paymentId
+            - amount
+            - requestedAt
+            allOf:
+            - $ref: '#/components/schemas/RefundOrder'
+      x-description-en: 'Refund
+
+        '
+      x-description-jp: '返金
+
+        '
+      description: 'Refund
+
+        '
+  schemas:
+    CapturePayment:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/CapturePaymentStateComplete'
+      - $ref: '#/components/schemas/CapturePaymentOrder'
+      - $ref: '#/components/schemas/PaymentMethodsForPayment'
+    ReauthExpiresAt:
+      type: integer
+      x-description-en: 'Epoch timestamp in seconds. Expiry date of order.
+
+        '
+      x-description-jp: 'エポックタイムスタンプ(秒単位)。 オーダーの有効期限
+
+        '
+      description: 'Epoch timestamp in seconds. Expiry date of order.
+
+        '
+    Capture:
+      type: object
+      properties:
+        acceptedAt:
+          nullable: true
+          $ref: '#/components/schemas/CompletedAt'
+        merchantCaptureId:
+          $ref: '#/components/schemas/MerchantCaptureId'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        orderDescription:
+          maxLength: 255
+          type: string
+          x-description-en: 'Description for Capture
+
+            '
+          x-description-jp: 'キャプチャの説明
+
+            '
+          description: 'Description for Capture
+
+            '
+        requestedAt:
+          $ref: '#/components/schemas/EpochTime'
+        expiresAt:
+          $ref: '#/components/schemas/AuthorizationExpiry'
+        status:
+          type: string
+          enum:
+          - USER_REQUESTED
+          - COMPLETED
+          x-description-en: 'USER_REQUESTED\:Confirmation request is sent to user
+
+            COMPLETED\:Capture is completed
+
+            '
+          x-description-jp: 'USER_REQUESTED:ユーザー承認待ち, COMPLETED:取引完了
+
+            '
+          description: 'USER_REQUESTED\:Confirmation request is sent to user
+
+            COMPLETED\:Capture is completed
+
+            '
+    MerchantCaptureId:
+      type: string
+      maxLength: 64
+      x-description-en: 'Transaction ID provided by merchant to uniquely identify Capture by transaction.<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      x-description-jp: '加盟店発番のトランザクション毎にCaptureを一意に特定できるトランザクションID<br>
+
+        使用可能な文字: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      description: 'Transaction ID provided by merchant to uniquely identify Capture by transaction.<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+    CapturePaymentOrder:
+      type: object
+      properties:
+        merchantPaymentId:
+          $ref: '#/components/schemas/MerchantPaymentIdSimple'
+        userAuthorizationId:
+          $ref: '#/components/schemas/UserAuthorizationId'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        requestedAt:
+          $ref: '#/components/schemas/EpochTime'
+        expiresAt:
+          type: integer
+          format: EpochTime
+          x-description-en: 'Epoch timestamp in seconds, expiry duration must be less then the expiry granted to the merchant.
+
+            '
+          x-description-jp: 'エポックタイムスタンプ（秒単位）。
+
+            '
+          description: 'Epoch timestamp in seconds, expiry duration must be less then the expiry granted to the merchant.
+
+            '
+        storeId:
+          nullable: true
+          $ref: '#/components/schemas/StoreId'
+        terminalId:
+          maxLength: 255
+          type: string
+          nullable: true
+          x-description-en: 'Id to identify terminal device under store
+
+            '
+          x-description-jp: '店舗に紐付く端末ID
+
+            '
+          description: 'Id to identify terminal device under store
+
+            '
+        orderReceiptNumber:
+          maxLength: 255
+          type: string
+          nullable: true
+          x-description-en: 'Receipt number provided by merchant
+
+            '
+          x-description-jp: '加盟店発番の注文番号
+
+            '
+          description: 'Receipt number provided by merchant
+
+            '
+        orderDescription:
+          maxLength: 255
+          type: string
+          nullable: true
+          x-description-en: 'Description of the order
+
+            '
+          x-description-jp: 'Description of the order
+
+            '
+          description: 'Description of the order
+
+            '
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOrderItem-2'
+        assumeMerchant:
+          type: string
+          maxLength: 255
+          nullable: true
+          x-description-en: 'Merchant identifier (Only set for AgentClient)
+
+            '
+          x-description-jp: '加盟店識別子（Agentクライアントの場合のみ設定される）
+
+            '
+          description: 'Merchant identifier (Only set for AgentClient)
+
+            '
+    ResultInfo:
+      type: object
+      properties:
+        code:
+          maxLength: 255
+          type: string
+        message:
+          maxLength: 255
+          type: string
+        codeId:
+          maxLength: 255
+          type: string
+          x-description-en: 'The code for more specific error inspection
+
+            '
+          x-description-jp: 'より具体的なエラー検査のためのコード
+
+            '
+          description: 'The code for more specific error inspection
+
+            '
+    StoreId:
+      type: string
+      maxLength: 255
+      x-description-en: 'Id to identify store under merchant
+
+        '
+      x-description-jp: '加盟店に紐付く店舗ID
+
+        '
+      description: 'Id to identify store under merchant
+
+        '
+    UserAuthorizationId:
+      type: string
+      maxLength: 64
+      x-description-en: 'The PayPay user reference id returned by the user authorization flow
+
+        '
+      x-description-jp: 'ユーザー認可フローによって返却されたPayPayユーザー認可ID
+
+        '
+      description: 'The PayPay user reference id returned by the user authorization flow
+
+        '
+    MerchantOrderItemResponse:
+      type: object
+      required:
+      - name
+      - quantity
+      - unit_price
+      properties:
+        name:
+          type: string
+          description: Name of the item
+        category:
+          type: string
+          description: Category of the item
+        quantity:
+          type: integer
+          minimum: 1
+          description: Quantity of this item in the current order
+        productId:
+          type: string
+          description: Product Id in merchant’s system
+        unit_price:
+          $ref: '#/components/schemas/MoneyAmount'
+    CanceledAt:
+      type: integer
+      x-description-en: 'Epoch timestamp in seconds. Timestamp when status became CANCELED.
+
+        '
+      x-description-jp: 'エポックタイムスタンプ（秒単位）。ステータスがCANCELEDになったときのタイムスタンプ。
+
+        '
+      description: 'Epoch timestamp in seconds. Timestamp when status became CANCELED.
+
+        '
+    RefundedAt:
+      type: integer
+      x-description-en: 'Epoch timestamp in seconds. Timestamp when status became REFUNDED.
+
+        '
+      x-description-jp: 'エポックタイムスタンプ（秒単位）。 ステータスがREFUNDEDになったときのタイムスタンプ。
+
+        '
+      description: 'Epoch timestamp in seconds. Timestamp when status became REFUNDED.
+
+        '
+    RefundState:
+      type: object
+      required:
+      - status
+      - acceptedAt
+      properties:
+        status:
+          type: string
+          enum:
+          - CREATED
+          - REFUNDED
+          x-description-en: null
+          x-description-jp: 'CREATED:受付済み, REFUNDED:返金完了
+
+            '
+        acceptedAt:
+          $ref: '#/components/schemas/RefundedAt'
+    MerchantPaymentIdSimple:
+      type: string
+      maxLength: 64
+      x-description-en: 'Transaction ID provided by merchant that uniquely identifies the transaction.<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      x-description-jp: '加盟店発番のトランザクション毎に一意に特定できるトランザクションID<br>
+
+        使用可能な文字: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      description: 'Transaction ID provided by merchant that uniquely identifies the transaction.<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+    QRCode:
+      type: object
+      properties:
+        merchantPaymentId:
+          $ref: '#/components/schemas/MerchantPaymentId'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        orderDescription:
+          maxLength: 255
+          type: string
+          description: Description of the order
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOrderItem'
+          description: This parameter is obsolete.<br>The item is retained for backward compatibility and will be removed in a future release.
+        codeType:
+          type: string
+          description: Please pass the fixed string "ORDER_QR"
+        storeInfo:
+          maxLength: 255
+          type: string
+          description: Store info for the merchant
+        storeId:
+          $ref: '#/components/schemas/StoreId'
+        productType:
+          $ref: '#/components/schemas/ProductTypeForCreateCode'
+        terminalId:
+          maxLength: 255
+          type: string
+          description: Id to identify terminal device under store
+        requestedAt:
+          $ref: '#/components/schemas/EpochTime'
+        isAuthorization:
+          type: boolean
+          description: By default it will be false, please set true if the amount will be captured later
+        authorizationExpiry:
+          $ref: '#/components/schemas/AuthorizationExpiry'
+        ipAddress:
+          $ref: '#/components/schemas/Ip'
+    MerchantOrderItem:
+      type: object
+      required:
+      - name
+      - quantity
+      - unitPrice
+      properties:
+        name:
+          maxLength: 255
+          type: string
+          description: Name of the item
+        category:
+          maxLength: 255
+          type: string
+          description: Category of the item
+        quantity:
+          type: integer
+          minimum: 1
+          maxLength: 11
+          description: Quantity of this item in the current order
+        productId:
+          maxLength: 255
+          type: string
+          description: Product Id in merchant’s system
+        unitPrice:
+          $ref: '#/components/schemas/MoneyAmount'
+    RefundOrder:
+      type: object
+      required:
+      - merchantRefundId
+      - paymentId
+      - amount
+      - requestedAt
+      properties:
+        merchantRefundId:
+          $ref: '#/components/schemas/MerchantRefundId'
+        paymentId:
+          $ref: '#/components/schemas/PaymentId'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        requestedAt:
+          $ref: '#/components/schemas/EpochTime'
+        reason:
+          nullable: true
+          $ref: '#/components/schemas/Reason'
+    MerchantPaymentId:
+      type: string
+      maxLength: 64
+      description: 'Transaction ID provided by merchant that uniquely identifies the transaction.<br>
+
+        When the same `merchantPaymentId` is specified, the previous result is returned.
+
+        '
+    ReauthRequestId:
+      type: string
+      maxLength: 255
+      x-description-en: 'Identifier reauth request generated by merchant<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      x-description-jp: '加盟店によるReAuthを識別するための一意のID<br>
+
+        使用可能な文字: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      description: 'Identifier reauth request generated by merchant<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+    NotDataResponse:
+      type: object
+      properties:
+        resultInfo:
+          $ref: '#/components/schemas/ResultInfo'
+        data:
+          $ref: '#/components/schemas/EmptyData'
+    Refund:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RefundState'
+      - $ref: '#/components/schemas/RefundOrder'
+    CaptureComplete:
+      type: object
+      required:
+      - merchantCaptureId
+      - acceptedAt
+      - amount
+      - requestedAt
+      - status
+      properties:
+        acceptedAt:
+          $ref: '#/components/schemas/CompletedAt'
+        merchantCaptureId:
+          $ref: '#/components/schemas/MerchantCaptureId'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        orderDescription:
+          maxLength: 255
+          type: string
+          x-description-en: 'Description for Capture
+
+            '
+          x-description-jp: 'キャプチャの説明
+
+            '
+          description: 'Description for Capture
+
+            '
+        requestedAt:
+          $ref: '#/components/schemas/EpochTime'
+        status:
+          type: string
+          enum:
+          - COMPLETED
+          x-description-en: 'COMPLETED\:Capture is completed
+
+            '
+          x-description-jp: 'COMPLETED:取引完了
+
+            '
+          description: 'COMPLETED\:Capture is completed
+
+            '
+    CompletedAt:
+      type: integer
+      x-description-en: 'Epoch timestamp in seconds. Timestamp when status became COMPLETED.
+
+        '
+      x-description-jp: 'エポックタイムスタンプ（秒単位）。 ステータスがCOMPLETEDになったときのタイムスタンプ。
+
+        '
+      description: 'Epoch timestamp in seconds. Timestamp when status became COMPLETED.
+
+        '
+    ExpiresAt:
+      type: integer
+      format: EpochTime
+      description: Epoch timestamp in seconds of the expiry of QR code. If the QR code is expired before a payment is made, merchants can create another QR code using `Create a QRCode` API.
+    CapturePaymentStateComplete:
+      type: object
+      properties:
+        paymentId:
+          $ref: '#/components/schemas/PaymentId'
+        status:
+          type: string
+          enum:
+          - COMPLETED
+          x-description-en: 'COMPLETED\:Capture is completed
+
+            '
+          x-description-jp: 'COMPLETED：取引完了
+
+            '
+          description: 'COMPLETED\:Capture is completed
+
+            '
+        acceptedAt:
+          $ref: '#/components/schemas/EpochTime'
+        refunds:
+          type: object
+          nullable: true
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Refund'
+        captures:
+          type: object
+          x-description-en: 'Transaction detail of "Capture a payment authorization"
+
+            '
+          x-description-jp: '「Capture a payment authorization」のトランザクション情報
+
+            '
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/CaptureComplete'
+          description: 'Transaction detail of "Capture a payment authorization"
+
+            '
+    MerchantOrderItem-2:
+      type: object
+      required:
+      - name
+      - quantity
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          x-description-en: 'Name of the item
+
+            '
+          x-description-jp: '商品名
+
+            '
+          description: 'Name of the item
+
+            '
+        category:
+          type: string
+          maxLength: 255
+          x-description-en: 'Category of the item
+
+            '
+          x-description-jp: '商品カテゴリ
+
+            '
+          description: 'Category of the item
+
+            '
+        quantity:
+          type: integer
+          maxLength: 11
+          minimum: 1
+          x-description-en: 'Quantity of this item in the current order
+
+            '
+          x-description-jp: 'この取引における商品の数量
+
+            '
+          description: 'Quantity of this item in the current order
+
+            '
+        productId:
+          type: string
+          maxLength: 255
+          x-description-en: 'Product Id in merchant’s system
+
+            '
+          x-description-jp: '加盟店システムにおける商品ID
+
+            '
+          description: 'Product Id in merchant’s system
+
+            '
+        unitPrice:
+          $ref: '#/components/schemas/MoneyAmount'
+    PaymentId:
+      type: string
+      maxLength: 64
+      x-description-en: 'The payment transaction id provided by PayPay
+
+        '
+      x-description-jp: 'PayPay発番の決済取引ID
+
+        '
+      description: 'The payment transaction id provided by PayPay
+
+        '
+    MerchantRefundIdSimple:
+      type: string
+      maxLength: 64
+      x-description-en: 'Transaction ID provided by merchant to uniquely identify a refund of a transaction.<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      x-description-jp: '加盟店発番のトランザクション毎に返金を一意に特定できるトランザクションID<br>
+
+        使用可能な文字: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      description: 'Transaction ID provided by merchant to uniquely identify a refund of a transaction.<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+    QRCodeResponse:
+      type: object
+      properties:
+        codeId:
+          type: string
+          description: The Id of the QR Code
+        url:
+          type: string
+          description: The url to be resolved as a QR Code
+        deeplink:
+          type: string
+          description: App Deeplink to invoke (Not needed in this flow)
+        expiryDate:
+          $ref: '#/components/schemas/ExpiresAt'
+        merchantPaymentId:
+          $ref: '#/components/schemas/MerchantPaymentId'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        orderDescription:
+          maxLength: 255
+          type: string
+          description: Description of the order
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantOrderItemResponse'
+        codeType:
+          type: string
+          description: Please pass the fixed string "ORDER_QR"
+        storeInfo:
+          maxLength: 255
+          type: string
+          description: Store info for the merchant
+        storeId:
+          $ref: '#/components/schemas/StoreId'
+        productType:
+          $ref: '#/components/schemas/ProductTypeForCreateCode'
+        terminalId:
+          maxLength: 255
+          type: string
+          description: Id to identify terminal device under store
+        requestedAt:
+          $ref: '#/components/schemas/EpochTime'
+        redirectUrl:
+          type: string
+          description: The URL to redirect the user to after completing the payment
+        redirectType:
+          type: string
+          description: The type of redirect after complete the payment
+          enum:
+          - WEB_LINK
+          - APP_DEEP_LINK
+          - WEBVIEW_IN_PAYPAY
+        isAuthorization:
+          type: boolean
+          description: By default it will be false, please set true if the amount will be captured later.
+        authorizationExpiry:
+          $ref: '#/components/schemas/AuthorizationExpiry'
+    EpochTime:
+      type: integer
+      example: 1704112496
+      x-description-en: 'Epoch timestamp in seconds
+
+        '
+      x-description-jp: 'エポックタイムスタンプ（秒単位）
+
+        '
+      description: 'Epoch timestamp in seconds
+
+        '
+    MoneyAmount:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          maxLength: 11
+          type: integer
+        currency:
+          type: string
+          enum:
+          - JPY
+    Ip:
+      type: string
+      format: ip
+      x-description-en: "The IP address of the user who initiates the payment. It will be used for risk analysis to check for fraudulent transactions.<br>\nCurrently the risk analysis process will not produce any errors, and there will be no impact on the API behavior.<br>\nIt must be a valid IP address (IPv4 or IPv6). Examples include:\n- IPv4: 172.217.22.14\n- IPv6: 2001:db8::ff00:42:8329\n\nPlease refer to the following pages for more details about the format validation.\n- IPv4: [RFC-791](https://datatracker.ietf.org/doc/html/rfc791)  \n- IPv6: [RFC-4291](https://datatracker.ietf.org/doc/html/rfc4291)\n"
+      x-description-jp: "ユーザーが支払いを開始する際のIPアドレス。不正取引を検出するためのリスク分析に使用されます。<br>\n現在、リスク分析プロセスはエラーを発生させず、API の動作に影響を与えることはありません。<br>\nIPv4またはIPv6フォーマットのIPアドレス\n- IPv4: 172.217.22.14\n- IPv6: 2001:db8::ff00:42:8329\n\n以下のページを参照して、フォーマット検証に関する詳細をご確認ください。\n- IPv4: [RFC-791](https://datatracker.ietf.org/doc/html/rfc791) \n- IPv6: [RFC-4291](https://datatracker.ietf.org/doc/html/rfc4291)\n"
+      example: 172.217.22.14
+      description: "The IP address of the user who initiates the payment. It will be used for risk analysis to check for fraudulent transactions.<br>\nCurrently the risk analysis process will not produce any errors, and there will be no impact on the API behavior.<br>\nIt must be a valid IP address (IPv4 or IPv6). Examples include:\n- IPv4: 172.217.22.14\n- IPv6: 2001:db8::ff00:42:8329\n\nPlease refer to the following pages for more details about the format validation.\n- IPv4: [RFC-791](https://datatracker.ietf.org/doc/html/rfc791)  \n- IPv6: [RFC-4291](https://datatracker.ietf.org/doc/html/rfc4291)\n"
+    PaymentState:
+      type: object
+      properties:
+        paymentId:
+          $ref: '#/components/schemas/PaymentId'
+        status:
+          type: string
+          x-description-en: "- CREATED - indicates an order is created and initialized. It is an initial state of the order. </br> \nIt is returned in the response because of some rare scenario: </br>\nIf Create a Payment api is called by the same merchant again with same merchantPaymentId within short duration, </br>\nthere is a chance that the previous api(order) might be still in initial state i.e CREATED, hence merchant might receive CREATE state for the second api. </br>\n- AUTHORIZED - indicates that the order is authorized and the amount is blocked in the user's PayPay account. </br>\n- REAUTHORIZING - indicates that the order is in the process of re-authorization after user approval due to a higher-amount capture adjustment. </br>\n- COMPLETED - indicates an order is successful and completed. </br>\n- REFUNDED - indicates that an order is refunded by merchant.</br>\n- FAILED - is returned if order is failed in the PayPay system, example due to request timeouts. </br>\n- CANCELED - indicates that the order is canceled and the amount is unblocked in the user's PayPay account. </br>\n- EXPIRED - indicates that the order is expired and the amount is unblocked in the user's PayPay account. \n"
+          x-description-jp: 'CREATED：受付済み, AUTHORIZED：残高ブロック済み,<BR>REAUTHORIZING：増額キャプチャ時のユーザー承認後処理中,<BR>COMPLETED：取引完了, REFUNDED：返金完了,<BR>FAILED：取引失敗, CANCELED：残高ブロック中止, EXPIRED：残高ブロック期限切れ
+
+            '
+          enum:
+          - CREATED
+          - AUTHORIZED
+          - REAUTHORIZING
+          - COMPLETED
+          - REFUNDED
+          - FAILED
+          - CANCELED
+          - EXPIRED
+          description: "- CREATED - indicates an order is created and initialized. It is an initial state of the order. </br> \nIt is returned in the response because of some rare scenario: </br>\nIf Create a Payment api is called by the same merchant again with same merchantPaymentId within short duration, </br>\nthere is a chance that the previous api(order) might be still in initial state i.e CREATED, hence merchant might receive CREATE state for the second api. </br>\n- AUTHORIZED - indicates that the order is authorized and the amount is blocked in the user's PayPay account. </br>\n- REAUTHORIZING - indicates that the order is in the process of re-authorization after user approval due to a higher-amount capture adjustment. </br>\n- COMPLETED - indicates an order is successful and completed. </br>\n- REFUNDED - indicates that an order is refunded by merchant.</br>\n- FAILED - is returned if order is failed in the PayPay system, example due to request timeouts. </br>\n- CANCELED - indicates that the order is canceled and the amount is unblocked in the user's PayPay account. </br>\n- EXPIRED - indicates that the order is expired and the amount is unblocked in the user's PayPay account. \n"
+        acceptedAt:
+          type: integer
+          x-description-en: 'Epoch timestamp in seconds.<br>・The amount will be captured later<br>Timestamp when status became AUTHORIZED.<br>・Instant payment<br>Timestamp when status became COMPLETED.
+
+            '
+          x-description-jp: 'エポックタイムスタンプ（秒単位）<br>・残高ブロックありの場合<br>ステータスがAUTHORIZEDになったときのタイムスタンプ<br>・残高ブロックなしの場合、<br>ステータスがCOMPLETEDになったときのタイムスタンプ
+
+            '
+          description: 'Epoch timestamp in seconds.<br>・The amount will be captured later<br>Timestamp when status became AUTHORIZED.<br>・Instant payment<br>Timestamp when status became COMPLETED.
+
+            '
+        refunds:
+          type: object
+          nullable: true
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Refund'
+        captures:
+          type: object
+          nullable: true
+          x-description-en: 'Transaction detail of "Capture a payment authorization"
+
+            '
+          x-description-jp: '「Capture a payment authorization」のトランザクション情報
+
+            '
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Capture'
+          description: 'Transaction detail of "Capture a payment authorization"
+
+            '
+        revert:
+          type: object
+          nullable: true
+          properties:
+            acceptedAt:
+              $ref: '#/components/schemas/CanceledAt'
+            merchantRevertId:
+              $ref: '#/components/schemas/MerchantRevertId'
+            requestedAt:
+              $ref: '#/components/schemas/EpochTime'
+            reason:
+              $ref: '#/components/schemas/Reason'
+    AuthorizationExpiry:
+      type: integer
+      format: EpochTime
+      x-description-en: 'Epoch timestamp in seconds. The expiry duration must be less than the expiry granted to the merchant.
+
+
+        Note:
+
+        The expiry, in case of authorization with PAY_LATER_CC, is subject to be shortened
+
+        under special circumstances such as user has cancelled PayLater, etc.
+
+        In such cases, PayPay will notify merchant in advance of an updated (shortened) the expiry
+
+        before merchant''s authorization period expires via webhook notification (see the section
+
+        [Transaction Events > AUTHORIZED | Create a payment authorization](#tag/Transaction-Events/AUTHORIZED-or-Create-a-payment-authorization)).
+
+        It is suggested for merchant to implement proper handling
+
+        after consuming such an event to avoid capture failure.
+
+        '
+      x-description-jp: 'エポックタイムスタンプ（秒単位）。有効期限は、加盟店ごとに許可されている有効期間の範囲内で設定してください。
+
+
+        注：
+
+        PAY_LATER_CCによるオーソリの場合の有効期間は、
+
+        ユーザーがPayPay（クレジット）をキャンセルしたなどの特別な状況下で短縮される可能性があります。
+
+        このような場合、PayPayはWebhook通知により、 加盟店のオーソリ期間が切れる前に有効期間の更新（短縮）を事前に加盟店に通知します
+
+        （「[トランザクションイベント > AUTHORIZED | Create a payment authorization](#tag/トランザクションイベント/AUTHORIZED-or-Create-a-payment-authorization)
+
+        」セクションを参照）。
+
+        キャプチャーの失敗を避けるために、加盟店はこのようなイベントを受信した後、適切な処理を実装することをお勧めします。
+
+        '
+      description: 'Epoch timestamp in seconds. The expiry duration must be less than the expiry granted to the merchant.
+
+
+        Note:
+
+        The expiry, in case of authorization with PAY_LATER_CC, is subject to be shortened
+
+        under special circumstances such as user has cancelled PayLater, etc.
+
+        In such cases, PayPay will notify merchant in advance of an updated (shortened) the expiry
+
+        before merchant''s authorization period expires via webhook notification (see the section
+
+        [Transaction Events > AUTHORIZED | Create a payment authorization](#tag/Transaction-Events/AUTHORIZED-or-Create-a-payment-authorization)).
+
+        It is suggested for merchant to implement proper handling
+
+        after consuming such an event to avoid capture failure.
+
+        '
+    PaymentMethodsForPayment:
+      type: object
+      properties:
+        paymentMethods:
+          type: array
+          x-description-en: 'Payment methods
+
+            '
+          x-description-jp: '支払い方法のリスト
+
+            '
+          items:
+            type: object
+            required:
+            - amount
+            - type
+            properties:
+              amount:
+                $ref: '#/components/schemas/MoneyAmount'
+              type:
+                type: string
+                enum:
+                - WALLET
+                - PAY_LATER_CC
+                - CREDIT_CARD
+                - POINT
+                - HIVEX
+                - GIFT_VOUCHER
+                x-description-en: 'HIVEX payment method will be applicable to only Hivex onboarded merchants.<br>
+
+                  Similarly, GIFT_VOUCHER will be applicable to merchants who are onboarded to support the Gift Voucher.
+
+                  '
+                x-description-jp: 'HIVEXはHIVEXサービス導入済みの加盟店にのみ返却される支払い方法です。<br>
+
+                  同様に、GIFT_VOUCHER は商品券を受け付けている加盟店のみに適用されます。
+
+                  '
+                description: 'HIVEX payment method will be applicable to only Hivex onboarded merchants.<br>
+
+                  Similarly, GIFT_VOUCHER will be applicable to merchants who are onboarded to support the Gift Voucher.
+
+                  '
+              breakdown:
+                type: object
+                properties:
+                  points:
+                    $ref: '#/components/schemas/PointsBreakdownRegular'
+          description: 'Payment methods
+
+            '
+    EmptyData:
+      type: object
+      x-description-en: 'data field will be null
+
+        '
+      x-description-jp: 'データフィールドはnull
+
+        '
+      description: 'data field will be null
+
+        '
+    PointsBreakdownRegular:
+      type: array
+      items:
+        type: object
+        properties:
+          amount:
+            type: integer
+          type:
+            type: string
+            enum:
+            - REGULAR
+      x-description-en: breakdown for points (cashback).
+      x-description-jp: ポイント内訳
+      description: breakdown for points (cashback).
+    MerchantRefundId:
+      type: string
+      maxLength: 64
+      x-description-en: 'Transaction ID provided by merchant to uniquely identify a refund of a transaction.<br>
+
+        For multiple refunds, a unique `merchantRefundId` must be set for each refund transaction.<br>
+
+        When the same `merchantRefundId` is specified for multiple refunds, the previous result is returned.<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      x-description-jp: '加盟店発番のトランザクション毎に返金を一意に特定できるトランザクションID<br>
+
+        複数回の返金を行う場合は、返金トランザクションごとに一意なmerchantRefundIdを設定。<br>
+
+        複数回の返金時に、同じmerchantRefundIdを指定した場合は、前回の結果が返却されます。<br>
+
+        使用可能な文字: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      description: 'Transaction ID provided by merchant to uniquely identify a refund of a transaction.<br>
+
+        For multiple refunds, a unique `merchantRefundId` must be set for each refund transaction.<br>
+
+        When the same `merchantRefundId` is specified for multiple refunds, the previous result is returned.<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+    ProductTypeForCreateCode:
+      type: string
+      enum:
+      - VIRTUAL_BONUS_INVESTMENT
+      - PAY_LATER_REPAYMENT
+      - REAL_INVESTMENT
+      - UTILITY_BILL
+      x-description-en: 'The product type in PayPay system.
+
+        Generally, this request parameter is optional.
+
+        For some merchants that are restricted to use only certain product types, the product type must be properly set.
+
+        '
+      x-description-jp: 'PayPayシステムのプロダクトタイプ。通常、このパラメータはオプションです。</br>
+
+        一部の加盟店は、特定のプロダクトタイプのみの使用に制限されているため、プロダクトタイプを適切に設定する必要があります。
+
+        '
+      description: 'The product type in PayPay system.
+
+        Generally, this request parameter is optional.
+
+        For some merchants that are restricted to use only certain product types, the product type must be properly set.
+
+        '
+    MerchantRevertId:
+      type: string
+      maxLength: 64
+      x-description-en: 'Transaction ID provided by merchant to uniquely identify Revert by transaction.<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      x-description-jp: '加盟店発番のトランザクション毎にRevertを一意に特定できるトランザクションID<br>
+
+        使用可能な文字: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+      description: 'Transaction ID provided by merchant to uniquely identify Revert by transaction.<br>
+
+        Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `-`, `_`
+
+        '
+    Reason:
+      type: string
+      maxLength: 255
+      x-description-en: null
+      x-description-jp: 'オプション
+
+        '
+    PaymentOrderWithoutUserAuthorizationId:
+      type: object
+      properties:
+        merchantPaymentId:
+          $ref: '#/components/schemas/MerchantPaymentIdSimple'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        requestedAt:
+          $ref: '#/components/schemas/EpochTime'
+        expiresAt:
+          type: integer
+          nullable: true
+          format: EpochTime
+          x-description-en: 'Epoch timestamp in seconds, expiry duration must be less then the expiry granted to the merchant.
+
+            '
+          x-description-jp: 'エポックタイムスタンプ（秒単位）。先に決済金額をブロックする場合の有効期限です。加盟店ごとに許可されている有効期間の範囲内で設定してください。
+
+            '
+          description: 'Epoch timestamp in seconds, expiry duration must be less then the expiry granted to the merchant.
+
+            '
+        canceledAt:
+          type: integer
+          nullable: true
+          format: EpochTime
+          x-description-en: 'Epoch timestamp in seconds. Processed time of FAILED status.
+
+            '
+          x-description-jp: 'エポックタイムスタンプ（秒単位）。FAILEDステータスに更新された処理時刻。
+
+            '
+          description: 'Epoch timestamp in seconds. Processed time of FAILED status.
+
+            '
+        storeId:
+          nullable: true
+          $ref: '#/components/schemas/StoreId'
+        terminalId:
+          maxLength: 255
+          type: string
+          nullable: true
+          x-description-en: 'Id to identify terminal device under store
+
+            '
+          x-description-jp: '店舗に紐付く端末ID
+
+            '
+          description: 'Id to identify terminal device under store
+
+            '
+        orderReceiptNumber:
+          maxLength: 255
+          type: string
+          nullable: true
+          x-description-en: 'Receipt number provided by merchant
+
+            '
+          x-description-jp: '加盟店発番の注文番号
+
+            '
+          description: 'Receipt number provided by merchant
+
+            '
+        orderDescription:
+          maxLength: 255
+          type: string
+          nullable: true
+          x-description-en: 'Description of the order
+
+            '
+          x-description-jp: '取引の説明
+
+            '
+          description: 'Description of the order
+
+            '
+        orderItems:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MerchantOrderItem-2'
+    RefundWithAssumeMerchant:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RefundState'
+      - $ref: '#/components/schemas/RefundOrder'
+      - type: object
+        properties:
+          assumeMerchant:
+            type: string
+            maxLength: 255
+            x-description-en: 'Merchant identifier (Only set for AgentClient)
+
+              '
+            x-description-jp: '加盟店識別子（エージェントクライアントの場合のみ設定される）
+
+              '
+            description: 'Merchant identifier (Only set for AgentClient)
+
+              '
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: Basic
+x-tagGroups:
+- name: General
+  tags:
+  - ApiAuthentication
+  - SpecifyMerchantInRequest
+  - ErrorHandling
+  - ApiGeneralRequestId
+- name: Apis
+  tags:
+  - Payment
+  - Wallet
+  - User
+- name: Payment judgment
+  tags:
+  - AboutPaymentJudgement
+- name: Notify users
+  tags:
+  - NotifyUsersWhenEventsOccur
+- name: status transition
+  tags:
+  - BasicStatusTransition
+- name: Webhooks
+  tags:
+  - WebhookSetup
+  - TransactionEvents
+- name: Recon file
+  tags:
+  - TransactionReconFileWithCapture
+- name: FAQ
+  tags:
+  - FAQ
+- name: Changelog
+  tags:
+  - Changelog
+x-doc-language: en
