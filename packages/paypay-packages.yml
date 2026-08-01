@@ -1,0 +1,56 @@
+generated: '2026-07-20'
+method: searched
+source: https://github.com/paypay
+note: >-
+  First-party PayPay Open Payment API (OPA) SDKs, all published under the official
+  github.com/paypay organization (Apache-2.0). No official Go or Ruby SDK was found.
+packages:
+- language: javascript
+  registry: npm
+  name: '@paypayopa/paypayopa-sdk-node'
+  url: https://www.npmjs.com/package/@paypayopa/paypayopa-sdk-node
+  repository: https://github.com/paypay/paypayopa-sdk-node
+  install: npm i @paypayopa/paypayopa-sdk-node
+  latest: 2.2.0
+  license: Apache-2.0
+  official: true
+- language: php
+  registry: packagist
+  name: paypayopa/php-sdk
+  url: https://packagist.org/packages/paypayopa/php-sdk
+  repository: https://github.com/paypay/paypayopa-sdk-php
+  install: composer require paypayopa/php-sdk
+  license: Apache-2.0
+  official: true
+- language: python
+  registry: pypi
+  name: paypayopa
+  url: https://pypi.org/project/paypayopa/
+  repository: https://github.com/paypay/paypayopa-sdk-python
+  install: pip install paypayopa
+  license: Apache-2.0
+  official: true
+- language: java
+  registry: maven-central
+  name: jp.ne.paypay:paypayopa
+  url: https://central.sonatype.com/artifact/jp.ne.paypay/paypayopa
+  repository: https://github.com/paypay/paypayopa-sdk-java
+  install: 'implementation "jp.ne.paypay:paypayopa"'
+  license: Apache-2.0
+  official: true
+samples:
+- name: paypay-sample-ecommerce-frontend
+  language: vue
+  url: https://github.com/paypay/paypay-sample-ecommerce-frontend
+- name: paypay-sample-ecommerce-backend-node
+  language: typescript
+  url: https://github.com/paypay/paypay-sample-ecommerce-backend-node
+- name: paypay-sample-ecommerce-backend-python
+  language: python
+  url: https://github.com/paypay/paypay-sample-ecommerce-backend-python
+- name: paypay-sample-ecommerce-backend-php
+  language: php
+  url: https://github.com/paypay/paypay-sample-ecommerce-backend-php
+- name: paypay-sample-ecommerce-backend-java
+  language: java
+  url: https://github.com/paypay/paypay-sample-ecommerce-backend-java

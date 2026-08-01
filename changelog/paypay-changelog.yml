@@ -1,0 +1,31 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/paypay-opa-openapi-original.json
+docs: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode#tag/Changelog
+scheme: dated-changelog
+current_version: v2 (Dynamic QR 1.1)
+note: >-
+  PayPay publishes a dated changelog inside each OPA product reference (columns:
+  Date of Change, Date of Release, Type of Change, Section, Updates). Recent window
+  captured verbatim from the Dynamic QR reference.
+entries:
+- date_of_change: '2022-09-21'
+  date_of_release: '2022-12-05'
+  type: Feature
+  section: Update a payment authorization
+  highlights: Changed the redirectType for the reauthorization flow.
+- date_of_change: '2022-09-10'
+  date_of_release: '2022-12-05'
+  type: Feature
+  section: Update a payment authorization
+  highlights: >-
+    Changed USER_CONFIRMATION_REQUIRED code to 08300104; removed qrCodeId/deeplink;
+    response now returns url + expiresAt instead of echoing the request.
+- date_of_change: '2022-08-23'
+  date_of_release: '2022-12-05'
+  type: Feature
+  section: Update a payment authorization
+  highlights: >-
+    Removed HIGHER_AMOUNT_REAUTH_NOT_SUPPORTED error; added higher/lower reauthorize
+    sequence diagrams and redirectUrl/redirectType/userAgent; added 201 response for
+    the higher-reauthorize case.

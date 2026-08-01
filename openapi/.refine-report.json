@@ -1,0 +1,16 @@
+{
+  "provider": "paypay",
+  "sources": [
+    "paypay-payment-api-openapi.yml",
+    "paypay-payments-api-openapi.yml"
+  ],
+  "outputs": [
+    "paypay-payment-api-openapi.yml",
+    "paypay-payments-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

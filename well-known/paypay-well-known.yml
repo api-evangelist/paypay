@@ -1,0 +1,18 @@
+generated: '2026-07-20'
+method: searched
+note: >-
+  Probed the developer portal and API hosts for /.well-known/ discovery documents.
+  developer.paypay.ne.jp is a single-page app that returns its index.html (HTTP 200,
+  text/html) for every /.well-known/ path, so those are NOT real documents. The API
+  gateway host returns 401. No genuine well-known document was found; none saved.
+hosts:
+- host: https://developer.paypay.ne.jp
+  documents:
+  - {path: /.well-known/security.txt, status: 200, real: false, reason: SPA index.html fallback}
+  - {path: /.well-known/openid-configuration, status: 200, real: false, reason: SPA index.html fallback}
+  - {path: /.well-known/oauth-authorization-server, status: 200, real: false, reason: SPA index.html fallback}
+  - {path: /.well-known/api-catalog, status: 200, real: false, reason: SPA index.html fallback}
+  - {path: /.well-known/ai-plugin.json, status: 200, real: false, reason: SPA index.html fallback}
+- host: https://api.paypay.ne.jp
+  documents:
+  - {path: /.well-known/security.txt, status: 401, real: false}

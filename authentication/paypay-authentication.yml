@@ -1,0 +1,40 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/paypay-opa-openapi-original.json
+docs: https://www.paypay.ne.jp/opa/doc/v1.0/api_authorization.html
+summary:
+  types:
+  - http
+  - hmac
+  note: >-
+    The OpenAPI declares a simplified BasicAuth (http Basic) security scheme, but
+    the PayPay Open Payment API (OPA) is actually secured with a custom HMAC-SHA256
+    request signature. Merchants obtain an API key + API secret from the PayPay
+    Developer / Merchant Panel (separate keys per environment).
+schemes:
+- name: BasicAuth
+  type: http
+  scheme: Basic
+  sources:
+  - openapi/paypay-opa-openapi-original.json
+- name: HmacOPA
+  type: http
+  scheme: hmac
+  documented: true
+  header: Authorization
+  format: 'hmac OPA:{ApiKey}:{macData}:{nonce}:{epoch}:{hash}'
+  algorithm: HMAC-SHA256
+  parameters:
+    api_key: API key generated in the Developer/Merchant Panel
+    api_secret: API key secret generated in the Developer/Merchant Panel
+    nonce: random string (recommended length 8)
+    epoch: epoch seconds, validated server-side to be within 2 minutes
+    hash: base64 HMAC over method + URI + content-type + epoch + nonce + body hash
+  source: https://www.paypay.ne.jp/opa/doc/v1.0/api_authorization.html
+merchant_scoping:
+  note: >-
+    Every request must also carry the merchant identifier, via the
+    X-ASSUME-MERCHANT HTTP header or the ?assumeMerchant={MerchantId} query
+    parameter (query takes precedence when both are supplied).
+  header: X-ASSUME-MERCHANT
+  query: assumeMerchant

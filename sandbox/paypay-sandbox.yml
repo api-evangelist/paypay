@@ -1,0 +1,26 @@
+generated: '2026-07-20'
+method: searched
+source: https://github.com/paypay/paypayopa-sdk-node
+docs: https://developer.paypay.ne.jp/
+note: >-
+  PayPay OPA provides a full sandbox/staging environment. There are no published
+  magic test card numbers (PayPay is a wallet network); testing is done with
+  sandbox API keys against the sandbox gateway, driving payments through the PayPay
+  app / test flow. Values below are published verbatim in the SDKs and OpenAPI.
+environments:
+- name: production
+  env_name: PROD
+  gateway: //apigw.paypay.ne.jp
+  keys: production API key + secret from the Developer/Merchant Panel
+- name: sandbox
+  env_name: STAGING
+  default: true
+  gateway: //apigw.sandbox.paypay.ne.jp
+  keys: sandbox API key + secret from the Developer/Merchant Panel
+- name: staging
+  env_name: STAGING
+  gateway: //apigw.stg.paypay.ne.jp
+separation:
+  mechanism: environment name (PROD vs STAGING) selects gateway host + key set
+  note: STAGING is the SDK default so unconfigured integrations run against sandbox.
+signup: https://developer.paypay.ne.jp/

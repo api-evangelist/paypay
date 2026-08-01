@@ -1,0 +1,14 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for PayPay Open Payment API
+  version: 1.0.0
+extends: openapi/paypay-opa-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: paypay
+    x-apievangelist-auth: HMAC-SHA256 (Authorization hmac OPA); not the Basic scheme declared in the spec
+    x-apievangelist-idempotency: client-supplied merchantPaymentId / merchantRefundId
+    x-apievangelist-webhooks: transaction-event webhooks (notification_type=Transaction)
+    x-apievangelist-request-id: X-REQUEST-ID response header
+    x-apievangelist-sandbox: STAGING env against //apigw.sandbox.paypay.ne.jp

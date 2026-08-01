@@ -1,0 +1,25 @@
+generated: '2026-07-20'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: apigw.paypay.ne.jp
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Feb  7 23:59:59 2027 GMT
+  hsts: null
+- host: apigw.stg.paypay.ne.jp
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Jan  8 23:59:59 2027 GMT
+  hsts: null
+- host: apigw.sandbox.paypay.ne.jp
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 23 23:59:59 2026 GMT
+  hsts: null
+domains:
+- domain: ne.jp
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: false

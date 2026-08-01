@@ -1,0 +1,23 @@
+generated: '2026-07-20'
+method: searched
+source: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode
+docs: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode
+note: >-
+  PayPay is a wallet/QR payment network (not a card acquirer), so declines surface
+  as resultInfo.code values on the capture / payment operations rather than ISO
+  card decline codes. These are the payment-failure codes a merchant must handle
+  when a PayPay wallet payment cannot complete. Complements paypay-problem-types.yml.
+envelope_field: resultInfo.code
+decline_codes:
+- {code: NO_SUFFICIENT_FUND, meaning: The user's balance is insufficient to make payment, action: Ask the buyer to top up their PayPay balance or choose another method}
+- {code: LIMIT_EXCEEDED, meaning: Payment amount exceeded upper limit (e.g. capture above preauthorized amount), action: Reduce amount within the authorized/allowed limit}
+- {code: USER_DEFINED_DAILY_LIMIT_EXCEEDED, meaning: Payment exceeded the user's 24-hour defined limit, action: Ask buyer to retry later or raise their limit}
+- {code: USER_DEFINED_MONTHLY_LIMIT_EXCEEDED, meaning: Payment exceeded the user's 30-day defined limit, action: Ask buyer to retry next cycle or raise their limit}
+- {code: PAY_METHOD_INVALIDATED, meaning: The paymentMethod is no longer valid, action: Guide the user to select a different payment method}
+- {code: CANCELED_USER, meaning: The user account is canceled, action: Payment cannot proceed for this user}
+- {code: UNACCEPTABLE_OP, meaning: Operation cannot be processed due to current condition (e.g. suspicious user), action: Do not retry; contact PayPay support if persistent}
+masked_to_buyer:
+  note: >-
+    Balance/limit failures (NO_SUFFICIENT_FUND, *_LIMIT_EXCEEDED) are surfaced to
+    the buyer inside the PayPay app during the on-app payment screen; merchants
+    learn the outcome via GetPaymentDetails polling or the transaction webhook.

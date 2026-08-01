@@ -1,0 +1,28 @@
+# PayPay
+
+> PayPay is Japan's largest QR/barcode mobile-payment network. Its Open Payment API (OPA v2) lets payment partners and merchants collect payments from PayPay wallet users via dynamic QR codes, web checkout, app-invoke flows, and a pre-authorize/capture flow. Auth is HMAC-SHA256; JPY settlement; transaction webhooks and daily reconciliation files.
+
+## APIs
+- [PayPay Open Payment API (OPA v2)](https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode): Dynamic QR, Web Payment, App Invoke, and pre-auth/capture over /v2/codes, /v2/payments, /v2/refunds.
+- [Developer Portal](https://developer.paypay.ne.jp/): register a merchant/developer account and get sandbox + production API keys.
+
+## Specs
+- [OpenAPI 3.0.0 (OPA v2)](https://raw.githubusercontent.com/api-evangelist/paypay/refs/heads/main/openapi/paypay-opa-openapi-original.json)
+
+## Docs
+- [API Authorization (HMAC)](https://www.paypay.ne.jp/opa/doc/v1.0/api_authorization.html)
+- [Web Payment reference](https://www.paypay.ne.jp/opa/doc/v1.0/webcashier)
+- [App Invoke reference](https://www.paypay.ne.jp/opa/doc/v1.0/appinvoke)
+- [FAQ / Help Center](https://integration.paypay.ne.jp/hc/en-us)
+
+## SDKs
+- [Node.js](https://www.npmjs.com/package/@paypayopa/paypayopa-sdk-node)
+- [PHP](https://packagist.org/packages/paypayopa/php-sdk)
+- [Python](https://pypi.org/project/paypayopa/)
+- [Java](https://github.com/paypay/paypayopa-sdk-java)
+
+## Artifacts
+- [Authentication](https://raw.githubusercontent.com/api-evangelist/paypay/refs/heads/main/authentication/paypay-authentication.yml)
+- [Conventions](https://raw.githubusercontent.com/api-evangelist/paypay/refs/heads/main/conventions/paypay-conventions.yml)
+- [Error catalog](https://raw.githubusercontent.com/api-evangelist/paypay/refs/heads/main/errors/paypay-problem-types.yml)
+- [Webhooks](https://raw.githubusercontent.com/api-evangelist/paypay/refs/heads/main/asyncapi/paypay-webhooks.yml)

@@ -1,0 +1,50 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/paypay-opa-openapi-original.json
+docs: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode
+summary: >-
+  Cross-cutting request/response semantics for the PayPay Open Payment API (OPA v2),
+  captured from the published reference and the OpenAPI.
+authentication:
+  style: HMAC-SHA256 request signature (Authorization header)
+  header: 'Authorization: hmac OPA:{ApiKey}:{macData}:{nonce}:{epoch}:{hash}'
+  merchant_scoping: X-ASSUME-MERCHANT header or ?assumeMerchant= query param
+  see: authentication/paypay-authentication.yml
+idempotency:
+  supported: true
+  mechanism: client-supplied-resource-id
+  keys:
+  - field: merchantPaymentId
+    scope: payment/QR creation and payment lifecycle operations
+    note: >-
+      The merchant-supplied unique payment id (<=64 chars) is the idempotency key.
+      Re-submitting the same merchantPaymentId does not create a duplicate payment;
+      DUPLICATE_DYNAMIC_QR_REQUEST is returned on a conflicting duplicate, and
+      reauthorize returns REAUTHORIZE_REJECTED "when idempotent response is initiated".
+  - field: merchantRefundId
+    scope: refund operations (refundPayment)
+    note: Merchant-supplied unique refund id makes refunds idempotent.
+  - field: merchantCaptureId
+    scope: capture operations (capturePaymentAuth)
+  - field: merchantRevertId
+    scope: revert/void operations (revertAuth)
+pagination:
+  supported: false
+  note: OPA v2 payment operations are resource-scoped by id; no list pagination.
+versioning:
+  scheme: uri-path
+  current: v2
+  see: lifecycle/paypay-lifecycle.yml
+request_tracing:
+  response_header: X-REQUEST-ID
+  format: alphanumeric + hyphens, max 64 chars (e.g. OPA45F681001AEF4605B2A50939F611F4B8)
+  note: Present on (almost) all responses; provide to PayPay support when raising issues.
+error_envelope:
+  field: resultInfo
+  shape: '{ code, message, codeId }'
+  see: errors/paypay-problem-types.yml
+rate_limit_signaling:
+  documented: true
+  code: 'HTTP 429 / resultInfo.code RATE_LIMIT'
+currency:
+  note: Amounts are objects { amount:int, currency:"JPY" }; JPY is the settlement currency.

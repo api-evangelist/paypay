@@ -1,0 +1,12 @@
+generated: '2026-07-20'
+method: generated
+source: openapi/paypay-opa-openapi-original.json
+skills:
+- file: paypay-collect-qr-payment.md
+  name: Collect a payment with a PayPay dynamic QR code
+  api: openapi/paypay-opa-openapi-original.json
+  operations: [createQRCode, getCodePaymentDetails, refundPayment, getRefundDetails]
+- file: paypay-preauth-capture.md
+  name: Pre-authorize and capture a PayPay payment
+  api: openapi/paypay-opa-openapi-original.json
+  operations: [createQRCode, capturePaymentAuth, reauthorizePayment, revertAuth]

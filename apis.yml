@@ -1,8 +1,27 @@
 aid: paypay
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/paypay.png
 name: PayPay
-description: 'PayPay is a company surfaced as a portfolio company of softbank-vision-fund and added to
-  the API Evangelist network as a stub for enrichment. Sector: fintech. This profile is a lead awaiting
-  the enrichment pipeline.'
+description: >-
+  PayPay is Japan's largest QR/barcode mobile-payment network (a SoftBank / Yahoo
+  Japan / Paytm joint venture) with tens of millions of users. Its Open Payment API
+  (OPA v2) lets payment partners and merchants collect payments from PayPay wallet
+  users through dynamic QR codes, web checkout (Web Cashier), app-invoke deep links,
+  and a pre-authorize-and-capture flow. The REST API (base //apigw.paypay.ne.jp) is
+  secured with HMAC-SHA256 request signatures, settles in JPY, sends transaction
+  webhooks plus daily reconciliation files, and ships official Node, PHP, Python and
+  Java SDKs under the github.com/paypay organization.
 url: https://raw.githubusercontent.com/api-evangelist/paypay/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -12,13 +31,105 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
 tags:
 - Company
 - Fintech
-apis: []
+- Payments
+- Mobile Payments
+- QR Code Payments
+- Digital Wallet
+- Japan
+- Merchant Payments
+apis:
+- aid: paypay:paypay-payment-api
+  name: PayPay Payment API
+  description: Everything involved in the payment life cycle
+  humanURL: https://developer.paypay.ne.jp/
+  baseURL: https://apigw.paypay.ne.jp
+  tags:
+  - Payment
+  properties:
+  - type: OpenAPI
+    url: openapi/paypay-payment-api-openapi.yml
+  - type: APIReference
+    url: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode
+- aid: paypay:paypay-payments-api
+  name: PayPay Payments API
+  description: The Payments API from PayPay — 1 operation(s) for payments.
+  humanURL: https://developer.paypay.ne.jp/
+  baseURL: https://apigw.paypay.ne.jp
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/paypay-payments-api-openapi.yml
+  - type: APIReference
+    url: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+common:
+- type: DeveloperPortal
+  url: https://developer.paypay.ne.jp/
+- type: Documentation
+  url: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode
+- type: APIReference
+  url: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode
+- type: GettingStarted
+  url: https://developer.paypay.ne.jp/
+- type: SignUp
+  url: https://developer.paypay.ne.jp/
+- type: Support
+  url: https://integration.paypay.ne.jp/hc/en-us
+- type: GitHubOrganization
+  url: https://github.com/paypay
+- type: OpenAPI
+  url: openapi/paypay-opa-openapi-original.json
+- type: Overlay
+  url: overlays/paypay-opa-overlay.yaml
+- type: Authentication
+  url: authentication/paypay-authentication.yml
+- type: Packages
+  url: packages/paypay-packages.yml
+- type: SDKs
+  url: packages/paypay-packages.yml
+- type: Conventions
+  url: conventions/paypay-conventions.yml
+- type: Idempotency
+  url: conventions/paypay-conventions.yml
+- type: ErrorCatalog
+  url: errors/paypay-problem-types.yml
+- type: DeclineCodes
+  url: errors/paypay-decline-codes.yml
+- type: Lifecycle
+  url: lifecycle/paypay-lifecycle.yml
+- type: Deprecation
+  url: lifecycle/paypay-lifecycle.yml
+- type: ChangeLog
+  url: changelog/paypay-changelog.yml
+- type: DataModel
+  url: data-model/paypay-data-model.yml
+- type: Webhooks
+  url: asyncapi/paypay-webhooks.yml
+- type: MCPServer
+  url: mcp/paypay-mcp.yml
+- type: Conformance
+  url: conformance/paypay-conformance.yml
+- type: Sandbox
+  url: sandbox/paypay-sandbox.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/paypay-llms.txt
+- type: DomainSecurity
+  url: security/paypay-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/paypay-agentic-access.yml
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v1

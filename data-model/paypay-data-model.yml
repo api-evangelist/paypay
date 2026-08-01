@@ -1,0 +1,35 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/paypay-opa-openapi-original.json
+note: >-
+  Entity-relationship graph derived from the PayPay OPA v2 OpenAPI schemas and the
+  merchant-supplied id fields that link them. All entities are scoped to a merchant
+  and keyed by merchant-supplied ids.
+entities:
+- name: QRCode
+  key: merchantPaymentId
+  response_key: codeId
+  fields: [merchantPaymentId, codeId, amount, codeType, orderItems, storeId, productType, isAuthorization]
+- name: Payment
+  key: merchantPaymentId
+  system_key: paymentId
+  states: [CREATED, AUTHORIZED, COMPLETED, EXPIRED, CANCELED, FAILED, REFUNDED]
+- name: Capture
+  key: merchantCaptureId
+  fields: [merchantCaptureId, amount, orderDescription, status, requestedAt, expiresAt]
+- name: Refund
+  key: merchantRefundId
+  system_key: paymentId
+  fields: [merchantRefundId, paymentId, amount, reason, status]
+relationships:
+- {from: Payment, type: belongs_to, to: QRCode, via: merchantPaymentId}
+- {from: Capture, type: belongs_to, to: Payment, via: merchantPaymentId}
+- {from: Refund, type: belongs_to, to: Payment, via: paymentId}
+- {from: Payment, type: has_many, to: Refund, via: paymentId}
+- {from: Payment, type: has_many, to: Capture, via: merchantPaymentId}
+id_conventions:
+  merchantPaymentId: merchant-supplied unique payment id (<=64 chars)
+  merchantRefundId: merchant-supplied unique refund id
+  merchantCaptureId: merchant-supplied unique capture id
+  paymentId: PayPay-generated system payment id
+  codeId: PayPay-generated QR code id

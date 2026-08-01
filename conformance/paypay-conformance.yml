@@ -1,0 +1,14 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/paypay-opa-openapi-original.json
+note: Cross-cutting standards conformance derived from the OPA v2 OpenAPI + published reference.
+standards:
+- {id: openapi-3.0, conforms: true, evidence: Published OpenAPI 3.0.0 documents behind Redoc}
+- {id: oauth2, conforms: false, evidence: Custom HMAC-SHA256 signature auth, not OAuth2}
+- {id: oidc, conforms: false}
+- {id: rfc9457-problem-details, conforms: false, evidence: Uses proprietary resultInfo envelope, not application/problem+json}
+- {id: webhooks, conforms: true, evidence: Documented transaction-event webhooks with notification_type}
+- {id: idempotency, conforms: true, evidence: Client-supplied merchantPaymentId/merchantRefundId dedupe keys}
+- {id: request-id-tracing, conforms: true, evidence: X-REQUEST-ID response header (<=64 chars)}
+- {id: rate-limit-signaling, conforms: true, evidence: HTTP 429 RATE_LIMIT documented}
+- {id: pci-dss, conforms: unknown, evidence: PayPay is a licensed Japanese payment provider; no public cert page harvested}

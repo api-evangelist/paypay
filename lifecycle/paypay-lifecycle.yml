@@ -1,0 +1,26 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/paypay-opa-openapi-original.json
+docs: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode
+versioning:
+  scheme: uri-path
+  current: v2
+  docs: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode
+servers:
+  production: //apigw.paypay.ne.jp
+  staging: //apigw.stg.paypay.ne.jp
+  sandbox: //apigw.sandbox.paypay.ne.jp
+deprecation:
+  documented: true
+  note: >-
+    The OpenAPI servers[] explicitly marks the legacy api.paypay.ne.jp,
+    stg-api.paypay.ne.jp and stg-api.sandbox.paypay.ne.jp hosts as "deprecated" in
+    favor of the apigw.paypay.ne.jp gateway hosts. Data retention: orders that age
+    out return ORDER_NO_LONGER_AVAILABLE.
+  deprecated_servers:
+  - //api.paypay.ne.jp
+  - //stg-api.paypay.ne.jp
+  - //stg-api.sandbox.paypay.ne.jp
+changelog: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode#tag/Changelog
+support: https://integration.paypay.ne.jp/hc/en-us
+deprecated_operations: []

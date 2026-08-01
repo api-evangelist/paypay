@@ -1,0 +1,44 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/paypay-opa-openapi-original.json
+docs: https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode
+format: paypay-resultInfo
+note: >-
+  PayPay OPA does not use RFC 9457 problem+json. Every response carries a
+  resultInfo envelope { code, message, codeId } alongside the HTTP status. The
+  string code is the machine-readable error identifier; codeId is a more specific
+  inspection code. Captured from the published "Error Handling" reference.
+envelope:
+  field: resultInfo
+  properties:
+    code: machine-readable status/error code string (<=255 chars)
+    message: human-readable message (<=255 chars)
+    codeId: more specific error inspection code (<=255 chars)
+common_codes:
+- {status: 200, code: SUCCESS, description: Success}
+- {status: 202, code: REQUEST_ACCEPTED, description: Request accepted}
+- {status: 400, code: INVALID_REQUEST_PARAMS, description: Request contains invalid data (e.g. unsupported currency)}
+- {status: 400, code: MISSING_REQUEST_PARAMS, description: A required parameter is not set}
+- {status: 400, code: INVALID_PARAMS, description: A set parameter is invalid}
+- {status: 401, code: UNAUTHORIZED, description: No valid api key and secret provided}
+- {status: 401, code: OP_OUT_OF_SCOPE, description: The operation is not permitted}
+- {status: 429, code: RATE_LIMIT, description: Too many requests}
+- {status: 500, code: SERVICE_ERROR, description: Something went wrong on PayPay service side}
+- {status: 500, code: INTERNAL_SERVER_ERROR, description: Something went wrong on PayPay service side}
+- {status: 503, code: MAINTENANCE_MODE, description: Down for scheduled maintenance}
+operation_codes:
+- {operation: createQRCode, status: 400, code: DUPLICATE_DYNAMIC_QR_REQUEST, description: Duplicate Dynamic QR request}
+- {operation: createQRCode, status: 400, code: PRE_AUTH_CAPTURE_UNSUPPORTED_MERCHANT, description: Merchant does not support Pre-Auth-Capture}
+- {operation: createQRCode, status: 400, code: PRE_AUTH_CAPTURE_INVALID_EXPIRY_DATE, description: Expiry date above allowed limit}
+- {operation: createQRCode, status: 400, code: DYNAMIC_QR_BAD_REQUEST, description: Request header, query, or body is invalid}
+- {operation: deleteQRCode, status: 404, code: DYNAMIC_QR_NOT_FOUND, description: The specified QR code cannot be found}
+- {operation: getCodePaymentDetails, status: 400, code: DYNAMIC_QR_PAYMENT_NOT_FOUND, description: The specified transaction is not found}
+- {operation: cancelPayment, status: 400, code: ORDER_NOT_REVERSIBLE, description: Order status is REFUNDED/EXPIRED/COMPLETED/CANCELED or cancellation window passed}
+- {operation: cancelPayment, status: 400, code: ORDER_NO_LONGER_AVAILABLE, description: Order no longer available due to data retention policy}
+- {operation: reauthorizePayment, status: 201, code: USER_CONFIRMATION_REQUIRED, description: Higher amount reauthorize initiated successfully}
+- {operation: reauthorizePayment, status: 400, code: REAUTHORIZE_REJECTED, description: Order state/type/paymentMethod not supported or idempotent response}
+- {operation: reauthorizePayment, status: 400, code: REAUTH_MAX_LIMIT_EXCEEDED, description: Maximum 10 reauthorize attempts exceeded}
+- {operation: capturePaymentAuth, status: 202, code: USER_CONFIRMATION_REQUIRED, description: Requested amount above allowed limit}
+- {operation: capturePaymentAuth, status: 400, code: ALREADY_CAPTURED, description: Cannot capture already captured order}
+- {operation: capturePaymentAuth, status: 400, code: ORDER_EXPIRED, description: Order already expired}
+- {operation: capturePaymentAuth, status: 404, code: RESOURCE_NOT_FOUND, description: Order not found}
