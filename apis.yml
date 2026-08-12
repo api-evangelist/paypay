@@ -87,7 +87,7 @@ common:
 - type: GitHubOrganization
   url: https://github.com/paypay
 - type: OpenAPI
-  url: openapi/paypay-opa-openapi-original.json
+  url: openapi/_original/paypay-opa-openapi-original.json
 - type: Overlay
   url: overlays/paypay-opa-overlay.yaml
 - type: Authentication
