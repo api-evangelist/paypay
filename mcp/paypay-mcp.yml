@@ -2,19 +2,42 @@ generated: '2026-07-20'
 method: derived
 status: candidate
 source: openapi/paypay-opa-openapi-original.json
-note: >-
-  No official hosted/remote PayPay MCP server was found. Candidate tool list derived
-  one-to-one from the OPA v2 OpenAPI operations for use as an MCP surface.
+note: No official hosted/remote PayPay MCP server was found. Candidate tool list derived one-to-one from
+  the OPA v2 OpenAPI operations for use as an MCP surface.
 server:
   name: paypay-opa
   transport: http
 tools:
-- {name: create_qr_code, description: Create a dynamic QR code to collect a payment, source_operation: 'openapi/paypay-opa-openapi-original.json#createQRCode'}
-- {name: delete_qr_code, description: Delete a previously created QR code, source_operation: 'openapi/paypay-opa-openapi-original.json#deleteQRCode'}
-- {name: get_code_payment_details, description: Get payment details for a code by merchantPaymentId, source_operation: 'openapi/paypay-opa-openapi-original.json#getCodePaymentDetails'}
-- {name: cancel_payment, description: Cancel a payment, source_operation: 'openapi/paypay-opa-openapi-original.json#cancelPayment'}
-- {name: reauthorize_payment, description: Update (reauthorize) a payment authorization amount, source_operation: 'openapi/paypay-opa-openapi-original.json#reauthorizePayment'}
-- {name: capture_payment_auth, description: Capture an authorized payment, source_operation: 'openapi/paypay-opa-openapi-original.json#capturePaymentAuth'}
-- {name: revert_auth, description: Revert (void) a payment authorization, source_operation: 'openapi/paypay-opa-openapi-original.json#revertAuth'}
-- {name: refund_payment, description: Refund a completed payment, source_operation: 'openapi/paypay-opa-openapi-original.json#refundPayment'}
-- {name: get_refund_details, description: Get details of a refund by merchantRefundId, source_operation: 'openapi/paypay-opa-openapi-original.json#getRefundDetails'}
+- name: create_qr_code
+  description: Create a dynamic QR code to collect a payment
+  source_operation: openapi/paypay-opa-openapi-original.json#createQRCode
+- name: delete_qr_code
+  description: Delete a previously created QR code
+  source_operation: openapi/paypay-opa-openapi-original.json#deleteQRCode
+- name: get_code_payment_details
+  description: Get payment details for a code by merchantPaymentId
+  source_operation: openapi/paypay-opa-openapi-original.json#getCodePaymentDetails
+- name: cancel_payment
+  description: Cancel a payment
+  source_operation: openapi/paypay-opa-openapi-original.json#cancelPayment
+- name: reauthorize_payment
+  description: Update (reauthorize) a payment authorization amount
+  source_operation: openapi/paypay-opa-openapi-original.json#reauthorizePayment
+- name: capture_payment_auth
+  description: Capture an authorized payment
+  source_operation: openapi/paypay-opa-openapi-original.json#capturePaymentAuth
+- name: revert_auth
+  description: Revert (void) a payment authorization
+  source_operation: openapi/paypay-opa-openapi-original.json#revertAuth
+- name: refund_payment
+  description: Refund a completed payment
+  source_operation: openapi/paypay-opa-openapi-original.json#refundPayment
+- name: get_refund_details
+  description: Get details of a refund by merchantRefundId
+  source_operation: openapi/paypay-opa-openapi-original.json#getRefundDetails
+deployment:
+  mode: none
+  verified: derived
+  tools: 9
+  checked: '2026-08-12'
+  source: catalog MCP census

@@ -1,0 +1,59 @@
+{
+  "item": [
+    {
+      "id": "0a09dd10-7cd9-41a6-9c0e-860509a09b75",
+      "name": "Payments",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dc30bdf8-f379-4d41-88af-21cb7f7d066b",
+          "name": "/v2/payments/:merchantPaymentId",
+          "request": {
+            "name": "/v2/payments/:merchantPaymentId",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "payments",
+                ":merchantPaymentId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "//apigw.paypay.ne.jp",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "54009f9c-9269-4788-995a-1e7505bd54a4",
+    "name": "Dynamic QR Payment Payments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\n\nPayPay Open Payment API (OPA) is designed to be used by our payment partners to make payment-related operations in different scenarios, so as to deliver the best payment experience to end users. After being onboarded as a PayPay OPA client, depending on the contract, you will have the capability on one or more of the below:\n  - Collect payment by directly debiting from PayPay user’s wallet\n  - Create Dynamic QR Code and collect payments via PayPay's App\n  - Use pre-authorization and capture payment flow to facilitate your purchase procedure\n  - Easy web application integration with PayPay cashier page to collect payment\n  - Build your own checkout experience with rich APIs provided by PayPay\n\nThis document will be focusing on APIs that support the second solution for Dynamic QR Code Payment.\n# Connection Information\n- This system uses custom SSL/TLS certificates on Amazon CloudFront for HTTPS communication. For certificate specifications and root CA information, please check: https://www.amazontrust.com/repository/\n- Additionally, the CloudFront distribution used by this system utilizes Server Name Indication (SNI) for HTTPS connections. Clients connecting to this system must support the TLS SNI extension. Please note that some legacy browsers or clients that do not support SNI will not be able to connect.\n- For details on SNI and its operation in CloudFront, please refer to the AWS documentation: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-https-dedicated-ip-or-sni.html\n- SSL/TLS Versions As a security measure, this system requires the use of TLS 1.2. Connections via TLS 1.0 or TLS 1.1 are not supported.\n\n# Dynamic QR Code Flow\nIn this flow we empower merchants to create a QR Code which can be displayed to the user. The user can then scan the QR Code using PayPay App to process the payment. The merchant can query the status of the payment as well as be notified of the payment to process the order. Details of the flow are shown in the <a href=\"./files/Dynamic QR Code Integration.pdf\" target=\"_blank\">slides here</a>. The polling interval should be about 2 to 3 seconds.<BR>\n<img src=\"./imgs/dynamicqrcode-sequence.png\">\n\n# Onboard merchant\n\nTo start utilizing our Open Payment API platform, at first the business needs to be onboarded as a PayPay merchant.\nThis process usually consists of information collection, manual verification, contract confirmation and credentials issuance.\n\nAfter becoming a merchant on PayPay, the following items would be setup for the client:\n\n  - api key and secret\n  - webhook endpoints\n  - client IP whitelist\n  - merchant identifier (merchant_id) (for agent client)\n\nThis setup can be managed using our merchant panel/ getting in touch with the sales representative.<BR><BR>\nAccess from users to the PayPay app and PayPay web screen from outside Japan is restricted. Please contact us for details.\n\n\nContact Support:\n Name: API Support",
+      "type": "text/plain"
+    }
+  }
+}

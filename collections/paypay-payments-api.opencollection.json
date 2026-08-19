@@ -1,0 +1,28 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dynamic QR Payment Payments API",
+    "version": "1.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "GET /v2/payments/{merchantPaymentId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "//apigw.paypay.ne.jp/v2/payments/:merchantPaymentId"
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

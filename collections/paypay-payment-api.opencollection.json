@@ -1,0 +1,171 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dynamic QR Payment API",
+    "version": "1.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a QRCode",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//apigw.paypay.ne.jp/v2/codes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a dynamic QR Code to receive payments.The expiration date of the created QRcode is set to \"expiryDate\". <br>\nPlease manage merchantPaymentId to make it unique on merchant side.\n\n**Timeout: 30s**\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "//apigw.paypay.ne.jp/v2/codes/:codeId",
+            "params": [
+              {
+                "name": "codeId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Code\n"
+              }
+            ]
+          },
+          "docs": "Delete a created dynamic QR Code.\n\n**Timeout: 15s**\n"
+        },
+        {
+          "info": {
+            "name": "Get payment details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "//apigw.paypay.ne.jp/v2/codes/payments/:merchantPaymentId",
+            "params": [
+              {
+                "name": "merchantPaymentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get payment details.\n\n**Timeout: 15s**\n"
+        },
+        {
+          "info": {
+            "name": "Cancel a payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "//apigw.paypay.ne.jp/v2/payments/:merchantPaymentId",
+            "params": [
+              {
+                "name": "merchantPaymentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API is used when, while creating a payment, the client cannot determine the status of\nthe payment. For example, the client receives a timeout or the response does not indicate the exact payment status.\n\nIf the request is accepted, PayPay will guarantee the money eventually goes back to\nuser's account. Please note this is an <b>asynchronous API</b> and hence there can be a lag in processing the cancellation.\n\n</br><b style=\"color:red\">Note:</b>\nYou can utilize the Cancel API within the speci"
+        },
+        {
+          "info": {
+            "name": "Update a payment authorization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//apigw.paypay.ne.jp/v2/payments/reauthorize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API is used to change the blocked amount of money during authorization with the same payment method.  \n\nDuring this API call, a new AUTHORIZED event webhook will be triggered, and the state of the transaction will remain as AUTHORIZED.\n\nIf lower amount of reauthorization is initiated, this API will return 200 for successful call and the process will be completed.\n<img src=\"./imgs/diagram-flow-day1-reauthorize.png\">\n\nIf higher amount of reauthorization is initiated, this API will return 201 "
+        },
+        {
+          "info": {
+            "name": "Capture a payment authorization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//apigw.paypay.ne.jp/v2/payments/capture",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This api is used to capture the payment authorization for a payment.</br>\nIf you want to increase the amount, we will send a notification to the user asking for consent.\n\nEven when a timeout error happens, we recommend to keep calling until it succeeds with an adequate interval, with different `merchantCaptureId`.\n\n**Timeout: 30s**\n"
+        },
+        {
+          "info": {
+            "name": "Revert a payment authorization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//apigw.paypay.ne.jp/v2/payments/preauthorize/revert",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API is used when the merchant wants to cancel the payment authorization because of the user has cancelled the order.\n\n**Timeout: 30s**\n"
+        },
+        {
+          "info": {
+            "name": "Refund a payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//apigw.paypay.ne.jp/v2/refunds",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Refund the payment to the user.<br>\nThis API only accepts payment refunds, and refunds are performed asynchronously on the PayPay side.<br>\nPlease see Get refund details for the results of your refund.\n\n**Timeout: 30s**\n"
+        },
+        {
+          "info": {
+            "name": "Get refund details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "//apigw.paypay.ne.jp/v2/refunds/:merchantRefundId?paymentId=:paymentId",
+            "params": [
+              {
+                "name": "merchantRefundId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get refund details. <br/><br/>\nIn case you use same `merchantRefundId` for the different `paymentId`s (different payment transaction IDs) in the POST Refund API. PayPay has multiple refund data for the same `merchantRefundId` in the system.\nPayPay maintains the merchantId, merchantRefundId, paymentId as idem key to identify the unique refund transaction details.\n\n**Timeout: 15s**\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

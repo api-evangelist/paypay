@@ -1,0 +1,1990 @@
+{
+  "item": [
+    {
+      "id": "de3e99ee-8a91-4b4c-9ec1-d4fb1fd73068",
+      "name": "Payment",
+      "description": {
+        "content": "Everything involved in the payment life cycle",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e5b43df7-0fdd-44b0-8d53-780878006229",
+          "name": "Create a QRCode",
+          "request": {
+            "name": "Create a QRCode",
+            "description": {
+              "content": "Create a dynamic QR Code to receive payments.The expiration date of the created QRcode is set to \"expiryDate\". <br>\nPlease manage merchantPaymentId to make it unique on merchant side.\n\n**Timeout: 30s**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "codes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"merchantPaymentId\": \"<string>\",\n  \"amount\": {\n    \"amount\": \"<integer>\",\n    \"currency\": \"<string>\"\n  },\n  \"codeType\": \"<string>\",\n  \"orderDescription\": \"<string>\",\n  \"orderItems\": [\n    {\n      \"name\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"unitPrice\": {\n        \"amount\": \"<integer>\",\n        \"currency\": \"<string>\"\n      },\n      \"category\": \"<string>\",\n      \"productId\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"unitPrice\": {\n        \"amount\": \"<integer>\",\n        \"currency\": \"<string>\"\n      },\n      \"category\": \"<string>\",\n      \"productId\": \"<string>\"\n    }\n  ],\n  \"storeInfo\": \"<string>\",\n  \"storeId\": \"<string>\",\n  \"productType\": \"<string>\",\n  \"terminalId\": \"<string>\",\n  \"requestedAt\": \"<integer>\",\n  \"isAuthorization\": \"<boolean>\",\n  \"authorizationExpiry\": \"<EpochTime>\",\n  \"ipAddress\": \"<ip>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0a689fda-24d9-4f74-861e-5b0082fd14c6",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {\n    \"codeId\": \"string\",\n    \"url\": \"string\",\n    \"deeplink\": \"string\",\n    \"expiryDate\": 6865,\n    \"merchantPaymentId\": \"<string>\",\n    \"amount\": {\n      \"amount\": \"<integer>\",\n      \"currency\": \"<string>\"\n    },\n    \"orderDescription\": \"string\",\n    \"orderItems\": [\n      {\n        \"name\": \"string\",\n        \"quantity\": 9639,\n        \"unit_price\": {\n          \"amount\": \"<integer>\",\n          \"currency\": \"<string>\"\n        },\n        \"category\": \"string\",\n        \"productId\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"quantity\": 1437,\n        \"unit_price\": {\n          \"amount\": \"<integer>\",\n          \"currency\": \"<string>\"\n        },\n        \"category\": \"string\",\n        \"productId\": \"string\"\n      }\n    ],\n    \"codeType\": \"string\",\n    \"storeInfo\": \"string\",\n    \"storeId\": \"<string>\",\n    \"productType\": \"<string>\",\n    \"terminalId\": \"string\",\n    \"requestedAt\": 1704112496,\n    \"redirectUrl\": \"string\",\n    \"redirectType\": \"WEB_LINK\",\n    \"isAuthorization\": false,\n    \"authorizationExpiry\": \"<EpochTime>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5880bebe-d5bf-4cab-a838-e5513db6a8a8",
+              "name": "The request has invalid parameters or missing required parameters.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b1cec79-9e69-413f-a3f9-c66bae6ac3b0",
+              "name": "Unauthorized\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "55c5a910-0bc8-4005-81a3-1b2b5cc95ff4",
+              "name": "Something went wrong on PayPay service side.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dcc006ce-53fb-4ce9-b39d-d4911f9bebe3",
+          "name": "Delete a Code",
+          "request": {
+            "name": "Delete a Code",
+            "description": {
+              "content": "Delete a created dynamic QR Code.\n\n**Timeout: 15s**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "codes",
+                ":codeId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "codeId",
+                  "description": "(Required) The ID of the Code\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b3bb4ff3-9aa2-435f-a1f5-80c249b3c406",
+              "name": "The requested succeeded\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes",
+                    ":codeId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "codeId",
+                      "description": "(Required) The ID of the Code\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {\n    \"qrStatus\": \"DELETED\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a3678f49-7dae-4ff2-9b7e-542de6494baf",
+              "name": "The request has invalid parameters or missing required parameters.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes",
+                    ":codeId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "codeId",
+                      "description": "(Required) The ID of the Code\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f228d16-d0a2-4ca6-9ee0-afb6cf4083c9",
+              "name": "Unauthorized\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes",
+                    ":codeId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "codeId",
+                      "description": "(Required) The ID of the Code\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9963dd9b-96dd-4bc3-b939-ab0ff1730010",
+              "name": "Something went wrong on PayPay service side.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes",
+                    ":codeId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "codeId",
+                      "description": "(Required) The ID of the Code\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3776b7a0-937f-4b3a-ae5a-3bc1e44c5827",
+          "name": "Get payment details",
+          "request": {
+            "name": "Get payment details",
+            "description": {
+              "content": "Get payment details.\n\n**Timeout: 15s**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "codes",
+                "payments",
+                ":merchantPaymentId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "merchantPaymentId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "653e3ef8-ce7b-4f88-b020-f8855e23942d",
+              "name": "Success\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes",
+                    "payments",
+                    ":merchantPaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "merchantPaymentId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {\n    \"paymentId\": \"string\",\n    \"status\": \"AUTHORIZED\",\n    \"acceptedAt\": 5545,\n    \"refunds\": {\n      \"data\": [\n        {\n          \"acceptedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"merchantRefundId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"paymentId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"requestedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"reason\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"acceptedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"merchantRefundId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"paymentId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"requestedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"reason\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ]\n    },\n    \"captures\": {\n      \"data\": [\n        {\n          \"acceptedAt\": 6573,\n          \"merchantCaptureId\": \"string\",\n          \"amount\": {\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"currency\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"orderDescription\": \"string\",\n          \"requestedAt\": 1704112496,\n          \"expiresAt\": \"<EpochTime>\",\n          \"status\": \"USER_REQUESTED\"\n        },\n        {\n          \"acceptedAt\": 7685,\n          \"merchantCaptureId\": \"string\",\n          \"amount\": {\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"currency\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"orderDescription\": \"string\",\n          \"requestedAt\": 1704112496,\n          \"expiresAt\": \"<EpochTime>\",\n          \"status\": \"COMPLETED\"\n        }\n      ]\n    },\n    \"revert\": {\n      \"acceptedAt\": 3904,\n      \"merchantRevertId\": \"string\",\n      \"requestedAt\": 1704112496,\n      \"reason\": \"string\"\n    },\n    \"merchantPaymentId\": \"<string>\",\n    \"amount\": {\n      \"amount\": \"<integer>\",\n      \"currency\": \"<string>\"\n    },\n    \"requestedAt\": 1704112496,\n    \"expiresAt\": 4630,\n    \"canceledAt\": 5118,\n    \"storeId\": \"<string>\",\n    \"terminalId\": \"string\",\n    \"orderReceiptNumber\": \"string\",\n    \"orderDescription\": \"string\",\n    \"orderItems\": [\n      {\n        \"name\": \"string\",\n        \"quantity\": 7179,\n        \"category\": \"string\",\n        \"productId\": \"string\",\n        \"unitPrice\": {\n          \"amount\": \"<integer>\",\n          \"currency\": \"<string>\"\n        }\n      },\n      {\n        \"name\": \"string\",\n        \"quantity\": 2409,\n        \"category\": \"string\",\n        \"productId\": \"string\",\n        \"unitPrice\": {\n          \"amount\": \"<integer>\",\n          \"currency\": \"<string>\"\n        }\n      }\n    ],\n    \"paymentMethods\": [\n      {\n        \"amount\": {\n          \"amount\": \"<integer>\",\n          \"currency\": \"<string>\"\n        },\n        \"type\": \"HIVEX\",\n        \"breakdown\": {\n          \"points\": [\n            {\n              \"amount\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"amount\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"amount\": {\n          \"amount\": \"<integer>\",\n          \"currency\": \"<string>\"\n        },\n        \"type\": \"PAY_LATER_CC\",\n        \"breakdown\": {\n          \"points\": [\n            {\n              \"amount\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"amount\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29091ec6-d903-4797-93df-ece9acb4d510",
+              "name": "Unauthorized\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes",
+                    "payments",
+                    ":merchantPaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "merchantPaymentId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3c0a6514-17a2-4121-95bc-3a7ddf22333c",
+              "name": "The requested resource doesn't exist.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes",
+                    "payments",
+                    ":merchantPaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "merchantPaymentId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9cdc3f6-5f36-4ecf-a1e9-47f360833212",
+              "name": "Something went wrong on PayPay service side.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "codes",
+                    "payments",
+                    ":merchantPaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "merchantPaymentId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "37585842-7cfd-4d1f-9a62-19b67955274f",
+          "name": "Cancel a payment",
+          "request": {
+            "name": "Cancel a payment",
+            "description": {
+              "content": "This API is used when, while creating a payment, the client cannot determine the status of\nthe payment. For example, the client receives a timeout or the response does not indicate the exact payment status.\n\nIf the request is accepted, PayPay will guarantee the money eventually goes back to\nuser's account. Please note this is an <b>asynchronous API</b> and hence there can be a lag in processing the cancellation.\n\n</br><b style=\"color:red\">Note:</b>\nYou can utilize the Cancel API within the specified timeframe. <br>\nBy default, the window is opened until 00:14:59 AM on the following day after the transaction took place. <br>\nOnce this window is closed, kindly use the refund API to initiate refund. <br>\n\nFor orderType REMITTANCE, the window is opened until 25 minutes after PayPay accepted the transaction.<br>\nYou're not able to initiate refund request for REMITTANCE.\n\nWhen you use PreAuth, you can cancel the payment only when the status is <code>AUTHORIZED</code>.<br>\nOnce the payment status becomes <code>COMPLETED</code> or the payment is expired and the status is <code>EXPIRED</code>, you cannot cancel the payment.<br>\n\nWhen a timeout error happens, we recommend to keep calling until it succeeds with an adequate interval, or till the specified window above comes to an end.\n\n**Timeout: 15s**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "payments",
+                ":merchantPaymentId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "merchantPaymentId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0e20eedd-e26e-4dea-a99d-d98bc79fa829",
+              "name": "The request is accepted.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    ":merchantPaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "merchantPaymentId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "50f588e6-81c6-4ac4-9281-14a059b0444b",
+              "name": "The request has invalid parameters or missing required parameters.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    ":merchantPaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "merchantPaymentId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ce9433c-b222-497c-b01b-8ddc929c7382",
+              "name": "Something went wrong on PayPay service side.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    ":merchantPaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "merchantPaymentId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e099d324-26c4-4094-85d5-26d0479c9535",
+          "name": "Update a payment authorization",
+          "request": {
+            "name": "Update a payment authorization",
+            "description": {
+              "content": "This API is used to change the blocked amount of money during authorization with the same payment method.  \n\nDuring this API call, a new AUTHORIZED event webhook will be triggered, and the state of the transaction will remain as AUTHORIZED.\n\nIf lower amount of reauthorization is initiated, this API will return 200 for successful call and the process will be completed.\n<img src=\"./imgs/diagram-flow-day1-reauthorize.png\">\n\nIf higher amount of reauthorization is initiated, this API will return 201 code for successful call to ask for user's confirmation.\n<img src=\"./imgs/diagram-flow-day2-reauthorize.png\">\n\nIn the reconciliation file, it is expected to have multiple records of AUTHORIZED transactions with the same order ID. The overview of how the reconciliation file will be is shown below:\n| orderId      | merchantId  | brandName    | storeId     | terminalId | transactionStatus | acceptedAt                    | amount    | orderReceiptNumber | methodOfPayment | merchantPaymentId | paymentDetails |\n|--------------|-------------|--------------|-------------|------------|-------------------|-------------------------------|-----------|--------------------|-----------------|-----------------|-----------------|\n| xx123456     | yy08181     | 〇〇加盟店     | 1234567     | 0          | COMPLETED         | 2020-01-30T10:53:25+09:00     |  480      | 000-0001           | wallet, point   | 000-0001        | [{\"paymentMethod\":\"POINT\", \"amount\":80}, {\"paymentMethod\":\"wallet\", \"amount\":400}] |\n| xx123456     | yy08181     | 〇〇加盟店     | 1234567     | 0          | REFUNDED          | 2020-01-30T16:53:25+09:00     |  -480     | 000-0001           | wallet          | refund_000-0001 | [{\"paymentMethod\":\"wallet\", \"amount\":-480}] |\n| xx567890     | yy08181     | 〇〇加盟店     | 1234567     | 0          | AUTHORIZED        | 2020-01-30T13:31:43+09:00     |  2924     | 000-0005           | wallet          | 000-0005        | [{\"paymentMethod\":\"wallet\", \"amount\":2924}] |\n| **xx567890** | **yy08181** | **〇〇加盟店** | **1234567** | **0**      | **AUTHORIZED**    | **2020-01-31T13:50:43+09:00** | **1000**  | **000-0005**       | **wallet**      | **000-0005**    | [{\"paymentMethod\":\"wallet\", \"amount\":1000}] |\n\n**Timeout: 30 s**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "payments",
+                "reauthorize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"<string>\",\n  \"paymentId\": \"<string>\",\n  \"updatedAmount\": {\n    \"amount\": \"<integer>\",\n    \"currency\": \"<string>\"\n  },\n  \"requestedAt\": \"<integer>\",\n  \"merchantComment\": \"<string>\",\n  \"redirectUrl\": \"<string>\",\n  \"redirectType\": \"<string>\",\n  \"userAgent\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "52b68c92-036f-4800-a1fc-9b7b4ff3346f",
+              "name": "Success\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "reauthorize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {\n    \"requestId\": \"<string>\",\n    \"paymentId\": \"<string>\",\n    \"updatedAmount\": {\n      \"amount\": \"<integer>\",\n      \"currency\": \"<string>\"\n    },\n    \"requestedAt\": 1704112496,\n    \"acceptedAt\": 8190,\n    \"expiresAt\": 2390,\n    \"paymentMethods\": [\n      {\n        \"amount\": {\n          \"amount\": \"<integer>\",\n          \"currency\": \"<string>\"\n        },\n        \"type\": \"CREDIT_CARD\"\n      },\n      {\n        \"amount\": {\n          \"amount\": \"<integer>\",\n          \"currency\": \"<string>\"\n        },\n        \"type\": \"PAY_LATER_CC\"\n      }\n    ]\n  },\n  \"requestId\": 2801,\n  \"paymentId\": \"string\",\n  \"updatedAmount\": 4480.410652638146,\n  \"requestedAt\": true,\n  \"acceptedAt\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c7de07a-7b06-41a1-9f92-8ccded17f615",
+              "name": "Success with Action Pending\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "reauthorize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"USER_CONFIRMATION_REQUIRED\",\n    \"message\": \"User confirmation required as requested amount is above the original authorized amount\",\n    \"codeId\": 8300104\n  },\n  \"data\": {\n    \"expiresAt\": 9393,\n    \"url\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3c674780-3bb9-4bfd-bd03-7566320f8828",
+              "name": "The request has invalid parameters or missing required parameters.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "reauthorize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "acd7ace9-bc37-4f9b-9ea1-7c63cc3715fd",
+              "name": "Unauthorized\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "reauthorize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19ce2199-7350-4a2d-b355-ee87f3c13246",
+              "name": "The requested resource doesn't exist.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "reauthorize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2983ba97-c1cc-47fc-98d1-112d16ecebcb",
+              "name": "Server Error\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "reauthorize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e31ced68-c608-440d-9b98-31dcf2bb4977",
+          "name": "Capture a payment authorization",
+          "request": {
+            "name": "Capture a payment authorization",
+            "description": {
+              "content": "This api is used to capture the payment authorization for a payment.</br>\nIf you want to increase the amount, we will send a notification to the user asking for consent.\n\nEven when a timeout error happens, we recommend to keep calling until it succeeds with an adequate interval, with different `merchantCaptureId`.\n\n**Timeout: 30s**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "payments",
+                "capture"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": {\n    \"amount\": \"<integer>\",\n    \"currency\": \"<string>\"\n  },\n  \"merchantCaptureId\": \"<string>\",\n  \"merchantPaymentId\": \"<string>\",\n  \"orderDescription\": \"<string>\",\n  \"requestedAt\": \"<integer>\",\n  \"MerchantPaymentId\": 6847\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "968ff080-9d97-47fc-a257-94ab0f3861e2",
+              "name": "Success\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "capture"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {\n    \"paymentId\": \"<string>\",\n    \"status\": \"COMPLETED\",\n    \"acceptedAt\": 1704112496,\n    \"refunds\": {},\n    \"captures\": {\n      \"data\": [\n        {\n          \"merchantCaptureId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"acceptedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"requestedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": \"COMPLETED\",\n          \"orderDescription\": \"string\"\n        },\n        {\n          \"merchantCaptureId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"acceptedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"requestedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": \"COMPLETED\",\n          \"orderDescription\": \"string\"\n        }\n      ]\n    },\n    \"merchantPaymentId\": \"<string>\",\n    \"userAuthorizationId\": \"string\",\n    \"amount\": {\n      \"amount\": \"<integer>\",\n      \"currency\": \"<string>\"\n    },\n    \"requestedAt\": 1704112496,\n    \"expiresAt\": 7410,\n    \"storeId\": \"<string>\",\n    \"terminalId\": \"string\",\n    \"orderReceiptNumber\": \"string\",\n    \"orderDescription\": \"string\",\n    \"orderItems\": [\n      {\n        \"name\": \"string\",\n        \"quantity\": 8538,\n        \"category\": \"string\",\n        \"productId\": \"string\",\n        \"unitPrice\": {\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"currency\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      {\n        \"name\": \"string\",\n        \"quantity\": 3324,\n        \"category\": \"string\",\n        \"productId\": \"string\",\n        \"unitPrice\": {\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"currency\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    ],\n    \"assumeMerchant\": \"string\",\n    \"paymentMethods\": [\n      {\n        \"amount\": {\n          \"amount\": \"<integer>\",\n          \"currency\": \"<string>\"\n        },\n        \"type\": \"POINT\",\n        \"breakdown\": {\n          \"points\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      {\n        \"amount\": {\n          \"amount\": \"<integer>\",\n          \"currency\": \"<string>\"\n        },\n        \"type\": \"PAY_LATER_CC\",\n        \"breakdown\": {\n          \"points\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce0c61ed-8231-4bf1-9610-49b293a53cf7",
+              "name": "Confirmation request is sent to user.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "capture"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"'USER_CONFIRMATION_REQUIRED'\\n\",\n    \"message\": \"'User confirmation required as requested amount is above allowed limit. | [OPA12345678901234567890123456789012]'\\n\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0240f994-9c02-4d0f-9938-2085adfd6878",
+              "name": "The request has invalid parameters or missing required parameters.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "capture"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2552057c-6e89-4478-ace6-7a146d2824bd",
+              "name": "Unauthorized\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "capture"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c4ad7d2-eed7-4cc5-948f-b0a556d9a235",
+              "name": "The requested resource doesn't exist.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "capture"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ebddbc55-ee01-453b-a17a-0ff5136fe68d",
+              "name": "Something went wrong on PayPay service side.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "capture"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "74c51e99-cf58-4858-b335-475ec263f593",
+          "name": "Revert a payment authorization",
+          "request": {
+            "name": "Revert a payment authorization",
+            "description": {
+              "content": "This API is used when the merchant wants to cancel the payment authorization because of the user has cancelled the order.\n\n**Timeout: 30s**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "payments",
+                "preauthorize",
+                "revert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"merchantRevertId\": \"<string>\",\n  \"paymentId\": \"<string>\",\n  \"requestedAt\": \"<integer>\",\n  \"reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b55ca650-1ddd-4eef-8b04-4b6ae30e8cd9",
+              "name": "Success\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "preauthorize",
+                    "revert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {\n    \"status\": \"CANCELED\",\n    \"acceptedAt\": 1704112496,\n    \"paymentId\": \"<string>\",\n    \"requestedAt\": 1704112496,\n    \"reason\": \"<string>\"\n  },\n  \"status\": 8736,\n  \"acceptedAt\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd8e9d32-73b0-42b6-83ea-3d3bbf29d286",
+              "name": "The request has invalid parameters or missing required parameters.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "preauthorize",
+                    "revert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df69bf17-8dec-4609-90d1-1afce541ada0",
+              "name": "The requested resource doesn't exist.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "preauthorize",
+                    "revert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5153044-24b2-4dbb-81a6-a5137b0595ab",
+              "name": "Something went wrong on PayPay service side.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payments",
+                    "preauthorize",
+                    "revert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a274f4bc-9131-4e43-831c-c72d66de20d0",
+          "name": "Refund a payment",
+          "request": {
+            "name": "Refund a payment",
+            "description": {
+              "content": "Refund the payment to the user.<br>\nThis API only accepts payment refunds, and refunds are performed asynchronously on the PayPay side.<br>\nPlease see Get refund details for the results of your refund.\n\n**Timeout: 30s**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "refunds"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"merchantRefundId\": \"<string>\",\n  \"paymentId\": \"<string>\",\n  \"amount\": {\n    \"amount\": \"<integer>\",\n    \"currency\": \"<string>\"\n  },\n  \"requestedAt\": \"<integer>\",\n  \"reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8415d00e-579c-45d8-bd42-c025ec1b57b2",
+              "name": "Success\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "refunds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {\n    \"acceptedAt\": 1992,\n    \"amount\": {\n      \"amount\": \"<integer>\",\n      \"currency\": \"<string>\"\n    },\n    \"merchantRefundId\": \"<string>\",\n    \"paymentId\": \"<string>\",\n    \"requestedAt\": 1704112496,\n    \"status\": \"CREATED\",\n    \"reason\": \"<string>\",\n    \"assumeMerchant\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c91c37a-82d8-42dd-b35e-404d5a2cb0c6",
+              "name": "Client Error\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "refunds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93f4454f-29b5-4ad7-926f-703d22730e75",
+              "name": "Server Error\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "refunds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3fd863a3-947e-4017-a2e7-e60476bfd7be",
+          "name": "Get refund details",
+          "request": {
+            "name": "Get refund details",
+            "description": {
+              "content": "Get refund details. <br/><br/>\nIn case you use same `merchantRefundId` for the different `paymentId`s (different payment transaction IDs) in the POST Refund API. PayPay has multiple refund data for the same `merchantRefundId` in the system.\nPayPay maintains the merchantId, merchantRefundId, paymentId as idem key to identify the unique refund transaction details.\n\n**Timeout: 15s**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "refunds",
+                "{{merchantRefundId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "paymentId",
+                  "value": "{{paymentId}}"
+                },
+                {
+                  "disabled": false,
+                  "key": "paymentId",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b723aa29-b771-4934-ad7d-eb3297dba34e",
+              "name": "Success\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "refunds",
+                    "{{merchantRefundId}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "paymentId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {\n    \"acceptedAt\": 1770,\n    \"amount\": {\n      \"amount\": \"<integer>\",\n      \"currency\": \"<string>\"\n    },\n    \"merchantRefundId\": \"<string>\",\n    \"paymentId\": \"<string>\",\n    \"requestedAt\": 1704112496,\n    \"status\": \"CREATED\",\n    \"reason\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "805cde9b-0b63-49ac-a94d-31d4df431997",
+              "name": "Unauthorized\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "refunds",
+                    "{{merchantRefundId}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "paymentId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bf9df16d-b22f-4ff6-9c1f-3c2c73be0b16",
+              "name": "The requested resource doesn't exist.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "refunds",
+                    "{{merchantRefundId}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "paymentId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5e5241b-537c-47bd-9c9a-68d202ce7191",
+              "name": "Server Error\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "refunds",
+                    "{{merchantRefundId}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "paymentId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resultInfo\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"codeId\": \"string\"\n  },\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "//apigw.paypay.ne.jp",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) ",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "merchantRefundId"
+    }
+  ],
+  "info": {
+    "_postman_id": "e9ebd279-d228-4a35-aed6-8ef79d88c4c5",
+    "name": "Dynamic QR Payment API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\n\nPayPay Open Payment API (OPA) is designed to be used by our payment partners to make payment-related operations in different scenarios, so as to deliver the best payment experience to end users. After being onboarded as a PayPay OPA client, depending on the contract, you will have the capability on one or more of the below:\n  - Collect payment by directly debiting from PayPay user’s wallet\n  - Create Dynamic QR Code and collect payments via PayPay's App\n  - Use pre-authorization and capture payment flow to facilitate your purchase procedure\n  - Easy web application integration with PayPay cashier page to collect payment\n  - Build your own checkout experience with rich APIs provided by PayPay\n\nThis document will be focusing on APIs that support the second solution for Dynamic QR Code Payment.\n# Connection Information\n- This system uses custom SSL/TLS certificates on Amazon CloudFront for HTTPS communication. For certificate specifications and root CA information, please check: https://www.amazontrust.com/repository/\n- Additionally, the CloudFront distribution used by this system utilizes Server Name Indication (SNI) for HTTPS connections. Clients connecting to this system must support the TLS SNI extension. Please note that some legacy browsers or clients that do not support SNI will not be able to connect.\n- For details on SNI and its operation in CloudFront, please refer to the AWS documentation: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-https-dedicated-ip-or-sni.html\n- SSL/TLS Versions As a security measure, this system requires the use of TLS 1.2. Connections via TLS 1.0 or TLS 1.1 are not supported.\n\n# Dynamic QR Code Flow\nIn this flow we empower merchants to create a QR Code which can be displayed to the user. The user can then scan the QR Code using PayPay App to process the payment. The merchant can query the status of the payment as well as be notified of the payment to process the order. Details of the flow are shown in the <a href=\"./files/Dynamic QR Code Integration.pdf\" target=\"_blank\">slides here</a>. The polling interval should be about 2 to 3 seconds.<BR>\n<img src=\"./imgs/dynamicqrcode-sequence.png\">\n\n# Onboard merchant\n\nTo start utilizing our Open Payment API platform, at first the business needs to be onboarded as a PayPay merchant.\nThis process usually consists of information collection, manual verification, contract confirmation and credentials issuance.\n\nAfter becoming a merchant on PayPay, the following items would be setup for the client:\n\n  - api key and secret\n  - webhook endpoints\n  - client IP whitelist\n  - merchant identifier (merchant_id) (for agent client)\n\nThis setup can be managed using our merchant panel/ getting in touch with the sales representative.<BR><BR>\nAccess from users to the PayPay app and PayPay web screen from outside Japan is restricted. Please contact us for details.\n\n\nContact Support:\n Name: API Support",
+      "type": "text/plain"
+    }
+  }
+}
