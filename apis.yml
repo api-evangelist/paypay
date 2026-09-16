@@ -27,15 +27,13 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/paypay.png
 name: PayPay
-description: >-
-  PayPay is Japan's largest QR/barcode mobile-payment network (a SoftBank / Yahoo
-  Japan / Paytm joint venture) with tens of millions of users. Its Open Payment API
-  (OPA v2) lets payment partners and merchants collect payments from PayPay wallet
-  users through dynamic QR codes, web checkout (Web Cashier), app-invoke deep links,
-  and a pre-authorize-and-capture flow. The REST API (base //apigw.paypay.ne.jp) is
-  secured with HMAC-SHA256 request signatures, settles in JPY, sends transaction
-  webhooks plus daily reconciliation files, and ships official Node, PHP, Python and
-  Java SDKs under the github.com/paypay organization.
+description: PayPay is Japan's largest QR/barcode mobile-payment network (a SoftBank / Yahoo Japan / Paytm
+  joint venture) with tens of millions of users. Its Open Payment API (OPA v2) lets payment partners and
+  merchants collect payments from PayPay wallet users through dynamic QR codes, web checkout (Web Cashier),
+  app-invoke deep links, and a pre-authorize-and-capture flow. The REST API (base //apigw.paypay.ne.jp)
+  is secured with HMAC-SHA256 request signatures, settles in JPY, sends transaction webhooks plus daily
+  reconciliation files, and ships official Node, PHP, Python and Java SDKs under the github.com/paypay
+  organization.
 url: https://raw.githubusercontent.com/api-evangelist/paypay/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -45,7 +43,7 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-20'
+modified: '2026-09-16'
 tags:
 - Company
 - Fintech
@@ -86,6 +84,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Website
+  url: https://paypay.ne.jp
 - type: DeveloperPortal
   url: https://developer.paypay.ne.jp/
 - type: Documentation
@@ -130,7 +130,10 @@ common:
   url: asyncapi/paypay-webhooks.yml
 - type: X-MCPServerCandidate
   url: mcp/paypay-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+    — a tool list derived from the published API contracts, not an existing server. The scorer already
+    read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+    surfaces with a server that does not exist.'
 - type: Conformance
   url: conformance/paypay-conformance.yml
 - type: Sandbox
