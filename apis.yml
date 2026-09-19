@@ -60,6 +60,8 @@ apis:
   humanURL: https://developer.paypay.ne.jp/
   baseURL: https://apigw.paypay.ne.jp
   tags:
+  - Payments
+  tags_raw:
   - Payment
   properties:
   - type: OpenAPI
