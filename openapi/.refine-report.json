@@ -1,8 +1,7 @@
 {
   "provider": "paypay",
   "sources": [
-    "paypay-payment-api-openapi.yml",
-    "paypay-payments-api-openapi.yml"
+    "_original/paypay-opa-openapi-original.json"
   ],
   "outputs": [
     "paypay-payment-api-openapi.yml",
@@ -11,6 +10,15 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "paypay-opa-openapi-original.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "paypay-opa-openapi-original.json: tagged paths GET /v2/payments/{merchantPaymentId} -> Payments",
+    "paypay-opa-openapi-original.json: declared missing tag: Payments",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "paypay-payment-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "paypay-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
