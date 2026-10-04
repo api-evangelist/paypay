@@ -1,0 +1,26 @@
+slug: paypay
+provider: PayPay
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Payment
+  spec_file: paypay-payment-api-openapi.yml
+  capability_id: BC-4250.40
+  capability_id_l1: BC-4250
+  capability_name: Payment Collection & Dunning
+  confidence: 0.7
+  evidence: POST /v2/payments/capture 'Capture a payment authorization'; POST /v2/refunds 'Refund a payment';
+    POST /v2/codes 'Create a QRCode'
+  reason: Pre-authorise, capture, revert and refund operations against wallet payments are payment authorisation
+    and collection; mapped to the closest available capability since the frame lacks a merchant acquiring
+    capability.
