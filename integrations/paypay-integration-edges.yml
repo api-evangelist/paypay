@@ -1,0 +1,116 @@
+edges:
+- partner_name: Japan FSA registered Electronic Payment Services Operators
+  partner: null
+  partner_match: register
+  type: register
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://www.fsa.go.jp/menkyo/menkyoj/dendai.pdf
+  category: Japanese electronic payment services operator registration (Banking Act, bank-API intermediary)
+  contract_reference:
+    register: Japan FSA registered Electronic Payment Services Operators
+    spec_file: null
+    standard: null
+    role: licensed-participant
+    registrations:
+    - registered_name: PayPay株式会社
+      register_id: 関東財務局長 （電代）第109号
+      corporate_number: '5010001192707'
+      register_country: JP
+      matched_domain: paypay.ne.jp
+      matched_by: domain
+      en_name: PayPay
+      registered: '2023-02-14'
+      identity: wikidata Q56348149 'PayPay' P3225 5010001192707 (the register's corporate number) P856 https://about.paypay.ne.jp/
+    signal_note: 'participation only: a Financial Services Agency registration; no API conformance is published
+      by this register'
+    detected_by: sweep-japan-fsa-registered-fintech.py
+    detected: '2026-10-21'
+    identity_source: wikidata P3225 (the register's Japanese corporate number) -> P856 (labelled provenance step;
+      Kin 2026-10-15 decision 1)
+  detected_by: sweep-japan-fsa-registered-fintech.py
+  first_seen: '2026-10-21'
+- partner_name: Japan FSA registered Funds Transfer Service Providers
+  partner: null
+  partner_match: register
+  type: register
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://www.fsa.go.jp/menkyo/menkyoj/shikin_idou.pdf
+  category: Japanese funds transfer registration (Payment Services Act)
+  contract_reference:
+    register: Japan FSA registered Funds Transfer Service Providers
+    spec_file: null
+    standard: null
+    role: licensed-participant
+    registrations:
+    - registered_name: ＰａｙＰａｙ株式会社
+      register_id: 関東財務局長 第00068号
+      corporate_number: '5010001192707'
+      register_country: JP
+      matched_domain: paypay.ne.jp
+      matched_by: domain
+      en_name: PayPay
+      licences:
+      - type 2
+      identity: wikidata Q56348149 'PayPay' P3225 5010001192707 (the register's corporate number) P856 https://about.paypay.ne.jp/
+    signal_note: 'participation only: a Financial Services Agency registration; no API conformance is published
+      by this register'
+    detected_by: sweep-japan-fsa-registered-fintech.py
+    detected: '2026-10-21'
+    identity_source: wikidata P3225 (the register's Japanese corporate number) -> P856 (labelled provenance step;
+      Kin 2026-10-15 decision 1)
+  detected_by: sweep-japan-fsa-registered-fintech.py
+  first_seen: '2026-10-21'
+- partner_name: Japan FSA registered Prepaid Payment Instrument Issuers (third-party type)
+  partner: null
+  partner_match: register
+  type: register
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://www.fsa.go.jp/menkyo/menkyoj/daisan.pdf
+  category: Japanese third-party prepaid payment instrument issuer registration (Payment Services Act)
+  contract_reference:
+    register: Japan FSA registered Prepaid Payment Instrument Issuers (third-party type)
+    spec_file: null
+    standard: null
+    role: licensed-participant
+    registrations:
+    - registered_name: ＰａｙＰａｙ株式会社
+      register_id: 関東財務局長 第00710号
+      corporate_number: '5010001192707'
+      register_country: JP
+      matched_domain: paypay.ne.jp
+      matched_by: domain
+      en_name: PayPay
+      registered: '2018-10-05'
+      identity: wikidata Q56348149 'PayPay' P3225 5010001192707 (the register's corporate number) P856 https://about.paypay.ne.jp/
+    signal_note: 'participation only: a Financial Services Agency registration; no API conformance is published
+      by this register'
+    detected_by: sweep-japan-fsa-registered-fintech.py
+    detected: '2026-10-21'
+    identity_source: wikidata P3225 (the register's Japanese corporate number) -> P856 (labelled provenance step;
+      Kin 2026-10-15 decision 1)
+  detected_by: sweep-japan-fsa-registered-fintech.py
+  first_seen: '2026-10-21'
+generated: '2026-10-21'
+method: searched
+source:
+- https://www.fsa.go.jp/en/regulated/licensed/index.html
+- https://www.fsa.go.jp/en/regulated/licensed/en_kasoutuka.pdf
+- https://www.fsa.go.jp/menkyo/menkyoj/kasoutuka.pdf
+- https://www.fsa.go.jp/en/regulated/licensed/denshikessaisyudan.pdf
+- https://www.fsa.go.jp/menkyo/menkyoj/shikin_idou.pdf
+- https://www.fsa.go.jp/menkyo/menkyoj/dendai.pdf
+- https://www.fsa.go.jp/menkyo/menkyoj/daisan.pdf
+checked:
+- https://www.fsa.go.jp/en/regulated/licensed/denshikessaisyudan.pdf
+- https://www.fsa.go.jp/en/regulated/licensed/en_kasoutuka.pdf
+- https://www.fsa.go.jp/en/regulated/licensed/index.html
+- https://www.fsa.go.jp/menkyo/menkyoj/daisan.pdf
+- https://www.fsa.go.jp/menkyo/menkyoj/dendai.pdf
+- https://www.fsa.go.jp/menkyo/menkyoj/kasoutuka.pdf
+- https://www.fsa.go.jp/menkyo/menkyoj/shikin_idou.pdf
